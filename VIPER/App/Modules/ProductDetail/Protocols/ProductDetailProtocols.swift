@@ -16,7 +16,7 @@ protocol ProductDetailViewProtocol: AnyObject {
 
 protocol ProductDetailWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
-    static func createProductDetailModule(product: ProductModel?) -> UIViewController
+    static func createProductDetailModule(productId: Int, slug: String, discountId: Int) -> UIViewController
 }
 
 protocol ProductDetailPresenterProtocol: AnyObject {
@@ -24,13 +24,18 @@ protocol ProductDetailPresenterProtocol: AnyObject {
     var view: ProductDetailViewProtocol? { get set }
     var interactor: ProductDetailInteractorInputProtocol? { get set }
     var wireFrame: ProductDetailWireFrameProtocol? { get set }
-    var product: ProductModel? { get set }
+    //var product: ProductModel? { get set }
+    var productId: Int? { get set }
+    var slug: String? { get set }
+    var discountId: Int? { get set }
+    
+    
     
     func viewDidLoad()
 }
 
 protocol ProductDetailInteractorOutputProtocol: AnyObject {
-// INTERACTOR -> PRESENTER
+    // INTERACTOR -> PRESENTER
 }
 
 protocol ProductDetailInteractorInputProtocol: AnyObject {

@@ -48,7 +48,7 @@ class HomeView: UIViewController {
     }
     
     // Función para cargar una imagen desde una URL
-    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+    /**private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(nil)
             return
@@ -63,7 +63,7 @@ class HomeView: UIViewController {
             completion(image)
         }
         task.resume()
-    }
+    }*/
     
     @objc func handleFilter() {
         // Acción para filtrar los productos
@@ -123,7 +123,8 @@ extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
         // Comprobar si se trata de la sección de productos
         if indexPath.section == 1 {
             // Notificar al Presenter que se ha seleccionado un producto
-            presenter?.didSelectProduct(at: indexPath.item)
+            /// Pasa el discount de cero de momento
+            presenter?.didSelectProduct(at: indexPath.item, at: 0)
         }
     }
 }

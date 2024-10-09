@@ -22,8 +22,15 @@ class HomeInteractor: HomeInteractorInputProtocol {
         remoteDatamanager?.remoteGetData(token: token)
     }
     
-    func fetchProductDetails(with id: Int) {
-        remoteDatamanager?.fetchProductDetails(with: id)
+    func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?) {
+        if discountId != 0 {
+            // Lógica cuando discountId está presente
+        } else {
+            /// Lógica cuando discountId no está presente
+            /// Es un producto normal sin descuento
+            remoteDatamanager?.fetchProductDetails(with: productId, with: slug, with: 0)
+        }
+        
     }
 }
 
@@ -49,18 +56,20 @@ extension HomeInteractor: HomeRemoteDataManagerOutputProtocol {
         ///
         
         // Crear un nuevo modelo de vista con los ítems filtrados
-        let filteredViewModel = HomeFeedRenderViewModel(
+        /**let filteredViewModel = HomeFeedRenderViewModel(
             categories: homeFeedRenderViewModel.categories, // Incluye categorías
             sliders: homeFeedRenderViewModel.sliders, // Incluye sliders
             ourProducts: homeFeedRenderViewModel.ourProducts,
             bestProducts: homeFeedRenderViewModel.bestProducts // Incluye mejores productos
-        )
-        presenter?.interactorCallBackData(with: filteredViewModel)
+        )*/
+        ///presenter?.interactorCallBackData(with: filteredViewModel)
+        presenter?.interactorCallBackData(with: homeFeedRenderViewModel)
     }
     
     
-    func remoteFetchProductDetailsBackData(product: ProductModel) {
+    func remoteFetchProductDetailsBackData(with productDetailRenderViewModel: ProductDetailRenderViewModel) {
+        print("===> HomeInteractor Respuesta completa del Remote: \(productDetailRenderViewModel)")
         // Aquí notificas al presenter que tienes el producto
-        presenter?.didFetchProductDetails(product: product)
+        presenter?.didFetchProductDetails(with: productDetailRenderViewModel)
     }
 }

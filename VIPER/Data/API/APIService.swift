@@ -10,6 +10,8 @@ import Foundation
 
 // MARK: APIServiceProtocol
 class APIService: APIServiceProtocol {
+    
+    
    
     
     // Login
@@ -49,7 +51,7 @@ class APIService: APIServiceProtocol {
         task.resume()
     }
     
-    /*
+    /**
      ahora vuelvo!!!
      Service
      showLandingProduct(slug:string, discount_id:any=null) {
@@ -66,7 +68,6 @@ class APIService: APIServiceProtocol {
          );
        }
      
-     
      Componente.ts:
      private initLandingProduct() {
          this.productSubscription  = this._ecommerce_guestService.showLandingProduct(this.slug,this.discount_id).subscribe( ( resp:any ) => {
@@ -77,12 +78,46 @@ class APIService: APIServiceProtocol {
            this.REVIEWS            = resp.REVIEWS;
            this.AVG_REVIEW         = resp.AVG_REVIEW;
            this.COUNT_REVIEW       = resp.COUNT_REVIEW;
-
-     
      */
     
-    func fetchProductDetails(id: Int, completion: @escaping (Result<ProductModel, Error>) -> Void) {
+    // fetchProductDetails
+    func fetchProductDetails(productId: Int, slug: String, discountId: Int?, completion: @escaping (Result<ProductDetailResponse, Error>) -> Void) {
+  
+        ///print("--Debug: APIService: Me llega productId, slug, discountId: \(productId) \(slug) \(String(describing: discountId))")
         
+        // Construir la URL
+        var urlString = "https://api.lujandev.com/api/home/show_landing_product/\(slug)"
+        if let discountId = discountId {
+            urlString += "?_id=\(discountId)"
+        }
+        
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "URLInvalid", code: -1, userInfo: nil)))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let productResponse = try JSONDecoder().decode(ProductDetailResponse.self, from: data)
+                completion(.success(productResponse))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
     }
     
     /**func fetchList(timeNow: Int, token: String?, completion: @escaping (Result<HomeListResponse, Error>) -> Void) {

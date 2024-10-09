@@ -22,7 +22,8 @@ protocol HomeWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createHomeModule() -> UIViewController
     func navigateToFilterOptionsView()
-    func navigateToProductDetail(from: HomeViewProtocol, with: ProductModel)
+    func navigateToProductDetail(from view: HomeViewProtocol?, with productId: Int, slug: String, discountId: Int?)
+    
 }
 
 protocol HomePresenterProtocol: AnyObject {
@@ -37,13 +38,13 @@ protocol HomePresenterProtocol: AnyObject {
     func getItem(at index: Int, in section: Int) -> HomeRenderType?
     
     func filterOptions()
-    func didSelectProduct(at index: Int)
+    func didSelectProduct(at index: Int, at discountId: Int)
 }
 
 protocol HomeInteractorOutputProtocol: AnyObject {
     // INTERACTOR -> PRESENTER
-    func interactorCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel) // Cambiado a HomeFeedRenderViewModel
-    func didFetchProductDetails(product: ProductModel)
+    func interactorCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel)
+    func didFetchProductDetails(with productDetailRenderViewModel: ProductDetailRenderViewModel)
 }
 
 protocol HomeInteractorInputProtocol: AnyObject {
@@ -54,7 +55,7 @@ protocol HomeInteractorInputProtocol: AnyObject {
     
     // FUNCIÓN QUE PERMITE AL INTERACTOR GESTIONAR DATOS CON LA EJECUCIÓN DE ESTA FUNCIÓN DESDE EL PRESENTER
     func interactorGetData(token: String)
-    func fetchProductDetails(with id: Int)
+    func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?)
 }
 
 protocol HomeDataManagerInputProtocol: AnyObject {
@@ -65,13 +66,13 @@ protocol HomeRemoteDataManagerInputProtocol: AnyObject {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: HomeRemoteDataManagerOutputProtocol? { get set }
     func remoteGetData(token: String)
-    func fetchProductDetails(with id: Int)
+    func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?)
 }
 
 protocol HomeRemoteDataManagerOutputProtocol: AnyObject {
     // REMOTEDATAMANAGER -> INTERACTOR
-    func remoteCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel) // Cambiado a HomeFeedRenderViewModel
-    func remoteFetchProductDetailsBackData(product: ProductModel)
+    func remoteCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel)
+    func remoteFetchProductDetailsBackData(with productDetailRenderViewModel: ProductDetailRenderViewModel)
 }
 
 protocol HomeLocalDataManagerInputProtocol: AnyObject {

@@ -75,18 +75,27 @@ extension HomePresenter: HomePresenterProtocol {
         wireFrame?.navigateToFilterOptionsView()
     }
     
-    func didSelectProduct(at index: Int) {
-        print("DEbbug: Presenter didSelectProduct: me llega el index de produc: \(index)")
-            
+    // Pasar datos del producto al interactor
+    //func didSelectProduct(at index: Int, at discountId: Int) {
+        ///print("DEbbug: Presenter didSelectProduct: me llega el index de produc: \(index)")
         // Obtener el id del producto de viewModel
-        if let productId = viewModel.ourProducts[index].id {
-            
-            print("DEbbug: Presenter En base al index, obtego el id del producto: \(productId)")
-            interactor?.fetchProductDetails(with: productId) // Llamar al interactor para obtener detalles del producto
+    //    if let productId = viewModel.ourProducts[index].id, let slug = viewModel.ourProducts[index].slug {
+            ///print("DEbbug: Presenter En base al index, obtego el id del producto: \(productId)")
+    //        interactor?.fetchProductDetails(with: productId, with: slug, with: discountId) // Llamar al interactor para obtener detalles del producto
+    //    } else {
+    //        print("Error: El ID del producto es nil")
+    //    }
+    //}
+    
+    // Pasar datos del producto al módulo de detalle
+    func didSelectProduct(at index: Int, at discountId: Int) {
+        if let productId = viewModel.ourProducts[index].id, let slug = viewModel.ourProducts[index].slug {
+            // Llamar al wireframe para navegar a la vista de detalle del producto
+            //wireFrame?.navigateToDetailProduct(from: view, with: productId, slug: slug, discountId: discountId)
+            wireFrame?.navigateToProductDetail(from: view, with: productId, slug: slug, discountId: discountId)
         } else {
             print("Error: El ID del producto es nil")
         }
-        
     }
 }
 
@@ -101,13 +110,15 @@ extension HomePresenter: HomeInteractorOutputProtocol {
         view?.updateUIList()
     }
     
-    func didFetchProductDetails(product: ProductModel) {
+    func didFetchProductDetails(with productDetailRenderViewModel: ProductDetailRenderViewModel) {
+        
+        print("===> HomePresenter Respuesta completa del Interactor: \(productDetailRenderViewModel)")
         // Aquí llamas al wireframe para navegar a la vista de detalles del producto
-        if let view = view {
+        /*if let view = view {
             wireFrame?.navigateToProductDetail(from: view, with: product)
         } else {
             print("Error: la vista es nil, no se puede navegar.")
-        }
+        }*/
     }
     
 }

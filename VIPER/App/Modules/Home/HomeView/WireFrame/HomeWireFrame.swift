@@ -11,8 +11,6 @@ import UIKit
 
 class HomeWireFrame: HomeWireFrameProtocol {
    
-    
-
     class func createHomeModule() -> UIViewController {
         
         let homeView = HomeView()
@@ -54,11 +52,14 @@ class HomeWireFrame: HomeWireFrameProtocol {
     }
     
     
-    func navigateToProductDetail(from view: HomeViewProtocol, with product: ProductModel) {
-        // Crear la vista de detalles del producto
-        let productDetailVC = ProductDetailWireFrame.createProductDetailModule(product: product)
-        //productDetailVC.product = product // Configura el producto en el controlador
+    func navigateToProductDetail(from view: HomeViewProtocol?, with productId: Int, slug: String, discountId: Int?) {
+        
+        guard let discountId = discountId else { return }
 
+        // Crear la vista de detalles del producto
+        let productDetailVC = ProductDetailWireFrame.createProductDetailModule(productId: productId, slug: slug, discountId: discountId)
+        ///productDetailVC.product = product // Configura el producto en el controlador
+        
         // Obtener la escena activa
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first(where: { $0.isKeyWindow }),
@@ -78,6 +79,4 @@ class HomeWireFrame: HomeWireFrameProtocol {
             }
         }
     }
-
-    
 }

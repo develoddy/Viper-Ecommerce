@@ -37,42 +37,56 @@ class HomeRemoteDataManager:HomeRemoteDataManagerInputProtocol {
         // Llama a la función fetchList en el apiService
         apiService.fetchList(timeNow: timeNow, token: token) { result in
             switch result {
-            case .success(let homeListResponse):
-                ///print("===> HomeRemote Respuesta completa del API: \(homeListResponse)")
-                //Crear el modelo de vista y enviarlo de vuelta al interactor
-                let viewModel = HomeFeedRenderViewModel(
-                    categories: homeListResponse.categories, // Agrega categorías
-                    sliders: homeListResponse.sliders, // Si tienes un modelo para sliders
-                    ourProducts: homeListResponse.ourProducts,
-                    bestProducts: homeListResponse.bestProducts
-                )
-                
-                self.remoteRequestHandler?.remoteCallBackData(with: viewModel)
+                case .success(let homeListResponse):
+                    ///print("===> HomeRemote Respuesta completa del API: \(homeListResponse)")
+                    //Crear el modelo de vista y enviarlo de vuelta al interactor
+                    let viewModel = HomeFeedRenderViewModel(
+                        categories: homeListResponse.categories, // Agrega categorías
+                        sliders: homeListResponse.sliders, // Si tienes un modelo para sliders
+                        ourProducts: homeListResponse.ourProducts,
+                        bestProducts: homeListResponse.bestProducts
+                    )
+                    
+                    self.remoteRequestHandler?.remoteCallBackData(with: viewModel)
 
-            case .failure(let error):
-                // Maneja el error de manera adecuada
-                print("Error fetching data: \(error.localizedDescription)") // Imprime el error
-                //self.remoteRequestHandler?.remoteCallBackData(with: nil) // O maneja el error según tu lógica
-            }
+                case .failure(let error):
+                    // Maneja el error de manera adecuada
+                    print("Error fetching data: \(error.localizedDescription)") // Imprime el error
+                    //self.remoteRequestHandler?.remoteCallBackData(with: nil) // O maneja el error según tu lógica
+                }
         }
     }
     
     // Método para obtener un producto específico (podría ser por ID, por ejemplo)
-    func fetchProductDetails(with id: Int) {
-        ///remoteRequestHandler?.remoteFetchProductDetailsBackData()
-    
-        /*apiService.fetchProductDetails(id: id) { result in
-            switch result {
+    func fetchProductDetails(with productId: Int, with slug: String, with discountId: Int?) {
+        
+        //print("--Debbug: HomeRemote: Me llega userId, slug, discountId: \(productId) \(slug) \(discountId)")
+        guard let discountId = discountId  else { return }
+        
+        // Llama a la función fetchProductDetails en el apiService
+        //apiService.fetchProductDetails(with: productId, slug: slug, discountId: discountId) { result in
+        apiService.fetchProductDetails(productId: productId, slug: slug, discountId: discountId) { result in
+        switch result {
             case .success(let productResponse):
-                // Supongamos que tienes un modelo ProductModel para el producto
-                let product = ProductModel(id: productResponse.id, name: productResponse.title , price: productResponse.priceUsd, description: productResponse.description)
+                ///print("===> HomeRemote Respuesta completa del API: \(productResponse)")
+                // Crear el modelo de vista a partir de la respuesta del producto
+                let viewModel = ProductDetailRenderViewModel(
+                    product: productResponse.product,
+                    relatedProducts: productResponse.related_products,
+                    saleFlash: productResponse.SALE_FLASH,
+                    reviews: productResponse.REVIEWS,
+                    avgReview: productResponse.AVG_REVIEW,
+                    countReview: productResponse.COUNT_REVIEW
+                )
                 
-                remoteRequestHandler?.remoteFetchProductDetailsBackData(product: product)
+                // Envía el modelo de vista de vuelta al interactor
+            self.remoteRequestHandler?.remoteFetchProductDetailsBackData(with: viewModel)
 
             case .failure(let error):
-                // Manejo de error
+                // Maneja el error de manera adecuada
                 print("Error fetching product details: \(error.localizedDescription)")
+                //self.remoteRequestHandler?.remoteCallBackProductDetails(with: nil) // O maneja el error según tu lógica
             }
-        }*/
+        }
     }
 }

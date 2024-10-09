@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 class ProductDetailWireFrame: ProductDetailWireFrameProtocol {
-
-    class func createProductDetailModule(product: ProductModel?) -> UIViewController {
+    
+    static func createProductDetailModule(productId: Int, slug: String, discountId: Int) -> UIViewController {
         
-        let productDetailOptionsView = ProductDetailView()
-        let viewController = productDetailOptionsView
+        let productDetailView = ProductDetailView()
+        let viewController = productDetailView
         let presenter: ProductDetailPresenterProtocol & ProductDetailInteractorOutputProtocol = ProductDetailPresenter()
         let interactor: ProductDetailInteractorInputProtocol & ProductDetailRemoteDataManagerOutputProtocol = ProductDetailInteractor()
         let localDataManager: ProductDetailLocalDataManagerInputProtocol = ProductDetailLocalDataManager()
@@ -24,7 +24,10 @@ class ProductDetailWireFrame: ProductDetailWireFrameProtocol {
         viewController.presenter = presenter
         presenter.view = viewController
         presenter.wireFrame = wireFrame
-        presenter.product = product
+        /// Propiedades & datosque llegan del modulo HomeView
+        presenter.productId = productId
+        presenter.slug = slug
+        presenter.discountId = discountId
         presenter.interactor = interactor
         interactor.presenter = presenter
         interactor.localDatamanager = localDataManager

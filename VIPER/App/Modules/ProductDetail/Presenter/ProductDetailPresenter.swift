@@ -8,23 +8,23 @@
 
 import Foundation
 
-class ProductDetailPresenter  {
+class ProductDetailPresenter: ProductDetailPresenterProtocol {
     
     // MARK: Properties
     weak var view: ProductDetailViewProtocol?
     var interactor: ProductDetailInteractorInputProtocol?
     var wireFrame: ProductDetailWireFrameProtocol?
-    //var product: ProductModel?
-    var product: ProductModel?
-    
-}
-
-extension ProductDetailPresenter: ProductDetailPresenterProtocol {
+    /// Propiedades & datosque llegan del modulo HomeView
+    var productId: Int?
+    var slug: String?
+    var discountId: Int?
     
     // TODO: implement presenter methods
     func viewDidLoad() {
+        print("ProductDetailPresenter - viewDidLoad: productId: \(String(describing: productId)), slug: \(String(describing: slug)), discountId: \(String(describing: discountId))")
     }
 }
+
 
 extension ProductDetailPresenter: ProductDetailInteractorOutputProtocol {
     // TODO: implement interactor output methods
