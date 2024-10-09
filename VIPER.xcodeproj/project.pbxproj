@@ -109,6 +109,7 @@
 		B3AA81752CB68D660071C63B /* ProductDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AA81742CB68D650071C63B /* ProductDetailResponse.swift */; };
 		B3AA81772CB690D60071C63B /* ProductDetailRenderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AA81762CB690D60071C63B /* ProductDetailRenderViewModel.swift */; };
 		B3AA817B2CB6ACE60071C63B /* ProductDetailItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AA817A2CB6ACE60071C63B /* ProductDetailItemView.swift */; };
+		B3AA817D2CB72E3D0071C63B /* RelatedProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AA817C2CB72E3C0071C63B /* RelatedProductCell.swift */; };
 		D598549660E83303FC87F2B3 /* Pods_VIPER_VIPERUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70BF9B390B942AEE1C133A1 /* Pods_VIPER_VIPERUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -240,6 +241,7 @@
 		B3AA81742CB68D650071C63B /* ProductDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailResponse.swift; sourceTree = "<group>"; };
 		B3AA81762CB690D60071C63B /* ProductDetailRenderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailRenderViewModel.swift; sourceTree = "<group>"; };
 		B3AA817A2CB6ACE60071C63B /* ProductDetailItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailItemView.swift; sourceTree = "<group>"; };
+		B3AA817C2CB72E3C0071C63B /* RelatedProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelatedProductCell.swift; sourceTree = "<group>"; };
 		B6D91E06A3B9E3BDF69F9427 /* Pods-VIPER.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VIPER.debug.xcconfig"; path = "Target Support Files/Pods-VIPER/Pods-VIPER.debug.xcconfig"; sourceTree = "<group>"; };
 		E70BF9B390B942AEE1C133A1 /* Pods_VIPER_VIPERUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VIPER_VIPERUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E627C3D62E816471154AC /* Pods-VIPER-VIPERUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VIPER-VIPERUITests.debug.xcconfig"; path = "Target Support Files/Pods-VIPER-VIPERUITests/Pods-VIPER-VIPERUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 			isa = PBXGroup;
 			children = (
 				B3AA817A2CB6ACE60071C63B /* ProductDetailItemView.swift */,
+				B3AA817C2CB72E3C0071C63B /* RelatedProductCell.swift */,
 			);
 			path = CustomsView;
 			sourceTree = "<group>";
@@ -1275,6 +1278,7 @@
 				B3A519152CB57CED00B23EF8 /* CategoryCell.swift in Sources */,
 				B3A519242CB5D0F000B23EF8 /* FilterOptionsView.swift in Sources */,
 				B384374E2CB4825700F4ED84 /* CategorieModel.swift in Sources */,
+				B3AA817D2CB72E3D0071C63B /* RelatedProductCell.swift in Sources */,
 				B384375C2CB4829800F4ED84 /* DiscountProductModel.swift in Sources */,
 				B39629132CB3024100984D01 /* HeaderHomeView.swift in Sources */,
 				B3AA81752CB68D660071C63B /* ProductDetailResponse.swift in Sources */,

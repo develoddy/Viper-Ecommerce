@@ -147,7 +147,7 @@ class ProductDetailItemView: UIView {
     }()
     
     // Botón de "Añadir al carrito"
-    /**let addToCartButton: UIButton = {
+    let addToCartButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Añadir al carrito", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -155,55 +155,34 @@ class ProductDetailItemView: UIView {
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
-    }()*/
-    
-    private lazy var addToCartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Añadir al carrito", for: .normal)
-        button.backgroundColor = .black
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.clipsToBounds = true
-
-        // Configurar el stack view que contendrá el quantityLabel
-        let labelStackView = UIStackView()
-        labelStackView.axis = .horizontal
-        labelStackView.alignment = .center
-        labelStackView.spacing = 5
-
-        // Añadir el quantityLabel al stack view
-        labelStackView.addArrangedSubview(quantityLabel)
-
-        // Añadir el stack view como subvista del botón
-        button.addSubview(labelStackView)
-
-        // Asegurarse de que el stack view ocupa todo el botón
-        labelStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            labelStackView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
-            labelStackView.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 10),
-            labelStackView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -10)
-        ])
-
-        return button
     }()
-
     
     // Contenedor horizontal para el Stepper de cantidad y el botón "Añadir al carrito"
     private lazy var actionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fill
+        stackView.distribution = .equalSpacing
         stackView.spacing = 10
         stackView.addArrangedSubview(quantityStepper)
-        ///stackView.addArrangedSubview(quantityLabel)
+        stackView.addArrangedSubview(quantityLabel)
         stackView.addArrangedSubview(addToCartButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    
+    // 1. Agrega la propiedad para el UICollectionView de productos relacionados
+    var relatedProductsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(RelatedProductCell.self, forCellWithReuseIdentifier: RelatedProductCell.identifier)
+        return collectionView
+    }()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -225,6 +204,7 @@ class ProductDetailItemView: UIView {
         addSubview(colorsStackView)
         addSubview(sizesStackView)
         addSubview(actionStackView)
+        addSubview(relatedProductsCollectionView) // Agrega la colección de productos relacionados
         
         // Configurar el stepper para cambiar el valor de la cantidad
         quantityStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
@@ -317,11 +297,6 @@ class ProductDetailItemView: UIView {
             width: frame.width - padding * 2,
             height: buttonHeight
         )
-
-        
-        // Layout específico del botón de añadir al carrito (50% del espacio del stack)
-        ///addToCartButton.widthAnchor.constraint(equalTo: actionStackView.widthAnchor, multiplier: 0.7).isActive = true
-        ///addToCartButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         
         // Agregar un margen izquierdo al botón "Añadir al carrito"
         addToCartButton.widthAnchor.constraint(equalTo: actionStackView.widthAnchor, multiplier: 0.6).isActive = true
@@ -330,6 +305,24 @@ class ProductDetailItemView: UIView {
         
         // Aumenta el margen izquierdo para el botón
         addToCartButton.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 20).isActive = true
+        
+        
+        // Layout del contenedor del Stepper y botón "Añadir al carrito"
+        actionStackView.frame = CGRect(
+            x: padding,
+            y: sizesStackView.frame.maxY + padding,
+            width: frame.width - padding * 2,
+            height: buttonHeight
+        )
+
+        // Layout de la colección de productos relacionados
+        let relatedProductsHeight: CGFloat = 100 // Ajusta la altura según sea necesario
+        relatedProductsCollectionView.frame = CGRect(
+            x: padding,
+            y: actionStackView.frame.maxY + padding,
+            width: frame.width - padding * 2,
+            height: relatedProductsHeight
+        )
     }
     
     // MARK: - Actions

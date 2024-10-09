@@ -75,6 +75,7 @@ class HomeWireFrame: HomeWireFrameProtocol {
                 navigationController.pushViewController(productDetailVC, animated: true)
             } else {
                 // Si no es un UINavigationController, presenta el ProductDetailViewController de otra forma
+                productDetailVC.modalPresentationStyle = .fullScreen
                 topController.present(productDetailVC, animated: true, completion: nil)
             }
         }
