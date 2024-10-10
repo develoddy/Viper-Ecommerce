@@ -13,6 +13,14 @@ import UIKit
 class ProductDetailItemView: UIView {
 
     // MARK: - UI Components
+    
+    /*let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false // Asegúrate de usar Auto Layout
+        return scrollView
+    }()*/
+    let scrollView = UIScrollView()
+    
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -81,7 +89,6 @@ class ProductDetailItemView: UIView {
             button.layer.cornerRadius = 20 // Botón redondo
             button.layer.borderWidth = 1
             button.layer.borderColor = UIColor.black.cgColor
-            button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }
     }()
@@ -97,7 +104,6 @@ class ProductDetailItemView: UIView {
             button.layer.cornerRadius = 10
             button.layer.borderWidth = 1
             button.layer.borderColor = UIColor.black.cgColor
-            button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }
     }()
@@ -109,7 +115,6 @@ class ProductDetailItemView: UIView {
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -120,7 +125,6 @@ class ProductDetailItemView: UIView {
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.spacing = 10
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -132,7 +136,6 @@ class ProductDetailItemView: UIView {
         stepper.maximumValue = 99
         stepper.value = 1
         stepper.tintColor = .systemBlue
-        stepper.translatesAutoresizingMaskIntoConstraints = false
         return stepper
     }()
     
@@ -142,7 +145,6 @@ class ProductDetailItemView: UIView {
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.text = "1"
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -153,7 +155,6 @@ class ProductDetailItemView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .black
         button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -167,7 +168,6 @@ class ProductDetailItemView: UIView {
         stackView.addArrangedSubview(quantityStepper)
         stackView.addArrangedSubview(quantityLabel)
         stackView.addArrangedSubview(addToCartButton)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -184,6 +184,23 @@ class ProductDetailItemView: UIView {
         return collectionView
     }()
     
+    // Nuevo UILabel para promociones
+    let promotionsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Recibe promociones exclusivas, ventas privadas y novedades"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // Nuevo UITextField para el correo electrónico
+    let emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "E-mail"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -196,38 +213,159 @@ class ProductDetailItemView: UIView {
 
     // MARK: - Setup View
     private func setupView() {
-        addSubview(mainImageView)
-        addSubview(thumbnailCollectionView)
-        addSubview(titleLabel)
-        addSubview(priceLabel)
-        addSubview(descriptionLabel)
-        addSubview(colorsStackView)
-        addSubview(sizesStackView)
-        addSubview(actionStackView)
-        addSubview(relatedProductsCollectionView) // Agrega la colección de productos relacionados
+        addSubview(scrollView)
+        
+        //scrollView.frame = bounds
+        
+        // Configura las restricciones para que scrollView ocupe toda la vista
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
+        
+        scrollView.addSubview(mainImageView)
+        scrollView.addSubview(thumbnailCollectionView)
+        scrollView.addSubview(titleLabel)
+        scrollView.addSubview(priceLabel)
+        scrollView.addSubview(descriptionLabel)
+        scrollView.addSubview(colorsStackView)
+        scrollView.addSubview(sizesStackView)
+        scrollView.addSubview(actionStackView)
+        scrollView.addSubview(relatedProductsCollectionView) // Agrega la colección de productos relacionados
+        
+        scrollView.addSubview(promotionsLabel) // Agrega el label de promociones
+        scrollView.addSubview(emailTextField) // Agrega el textField para el email
         
         // Configurar el stepper para cambiar el valor de la cantidad
         quantityStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        
+        // Definir el contenido de scrollView
+        //scrollView.frame = bounds
+        
+        //setupConstraints()
     }
+    
+    
+
+    /**private func setupConstraints() {
+        let padding: CGFloat = 20
+        let collectionHeight: CGFloat = 100
+        let imageHeight = frame.height * 0.4
+        let buttonHeight: CGFloat = 40
+        
+        // Configurar restricciones para la imagen principal
+        mainImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mainImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: padding),
+            mainImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            mainImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding),
+            mainImageView.heightAnchor.constraint(equalToConstant: imageHeight)
+        ])
+        
+        // Configurar restricciones para la colección de miniaturas
+        thumbnailCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            thumbnailCollectionView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: padding),
+            thumbnailCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            thumbnailCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding),
+            thumbnailCollectionView.heightAnchor.constraint(equalToConstant: collectionHeight)
+        ])
+
+        // Configurar restricciones para el título
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: thumbnailCollectionView.bottomAnchor, constant: padding),
+            titleLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            titleLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para el precio
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            priceLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            priceLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para la descripción
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            descriptionLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 10),
+            descriptionLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            descriptionLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para el StackView de colores
+        colorsStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorsStackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
+            colorsStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            colorsStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para el StackView de tallas
+        sizesStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sizesStackView.topAnchor.constraint(equalTo: colorsStackView.bottomAnchor, constant: 10),
+            sizesStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            sizesStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para el actionStackView
+        actionStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            actionStackView.topAnchor.constraint(equalTo: sizesStackView.bottomAnchor, constant: 20),
+            actionStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            actionStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding),
+            actionStackView.heightAnchor.constraint(equalToConstant: buttonHeight)
+        ])
+
+        // Configurar restricciones para la colección de productos relacionados
+        relatedProductsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            relatedProductsCollectionView.topAnchor.constraint(equalTo: actionStackView.bottomAnchor, constant: 20),
+            relatedProductsCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            relatedProductsCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding),
+            relatedProductsCollectionView.heightAnchor.constraint(equalToConstant: collectionHeight)
+        ])
+
+        // Configurar restricciones para el label de promociones
+        promotionsLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            promotionsLabel.topAnchor.constraint(equalTo: relatedProductsCollectionView.bottomAnchor, constant: 20),
+            promotionsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            promotionsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ])
+
+        // Configurar restricciones para el textField para el email
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            emailTextField.topAnchor.constraint(equalTo: promotionsLabel.bottomAnchor, constant: 20),
+            emailTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            emailTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding),
+            emailTextField.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -padding) // Asegura que el emailTextField esté al final del scrollView
+        ])
+    }*/
+    
+    
     
     // MARK: - Layout
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        ///let padding: CGFloat = 20
-        ///let collectionHeight: CGFloat = 100
-        ///let imageHeight = frame.height - collectionHeight - padding * 2
-        
-        ///let padding: CGFloat = 20
-        ///let collectionHeight: CGFloat = 100
-        ///let imageHeight = frame.height * 0.4
-        ///let labelSpacing: CGFloat = 10
         
         let padding: CGFloat = 20
         let collectionHeight: CGFloat = 100
         let imageHeight = frame.height * 0.4
         let labelSpacing: CGFloat = 10
         let buttonHeight: CGFloat = 40
+        
+        // Ajusta el contentView para que sea del mismo tamaño que el scrollView
+        //self.frame = CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.contentSize.height)
         
         
         // Layout de la imagen principal
@@ -299,21 +437,13 @@ class ProductDetailItemView: UIView {
         )
         
         // Agregar un margen izquierdo al botón "Añadir al carrito"
-        addToCartButton.widthAnchor.constraint(equalTo: actionStackView.widthAnchor, multiplier: 0.6).isActive = true
-        addToCartButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        addToCartButton.translatesAutoresizingMaskIntoConstraints = false
+        //addToCartButton.widthAnchor.constraint(equalTo: actionStackView.widthAnchor, multiplier: 0.6).isActive = true
+        //addToCartButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        //addToCartButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Aumenta el margen izquierdo para el botón
-        addToCartButton.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 20).isActive = true
+        //addToCartButton.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 20).isActive = true
         
-        
-        // Layout del contenedor del Stepper y botón "Añadir al carrito"
-        actionStackView.frame = CGRect(
-            x: padding,
-            y: sizesStackView.frame.maxY + padding,
-            width: frame.width - padding * 2,
-            height: buttonHeight
-        )
 
         // Layout de la colección de productos relacionados
         let relatedProductsHeight: CGFloat = 100 // Ajusta la altura según sea necesario
@@ -322,6 +452,29 @@ class ProductDetailItemView: UIView {
             y: actionStackView.frame.maxY + padding,
             width: frame.width - padding * 2,
             height: relatedProductsHeight
+        )
+        
+        // Layout del label de promociones
+        promotionsLabel.frame = CGRect(
+            x: padding,
+            y: relatedProductsCollectionView.frame.maxY + labelSpacing,
+            width: frame.width - padding * 2,
+            height: 40 // Altura fija para el label
+        )
+
+        // Layout del textField para el email
+        emailTextField.frame = CGRect(
+            x: padding,
+            y: promotionsLabel.frame.maxY + labelSpacing,
+            width: frame.width - padding * 2,
+            height: buttonHeight // Altura fija para el textField
+        )
+        
+        // Actualiza el contentSize del scrollView
+        let contentHeight = relatedProductsCollectionView.frame.maxY + padding
+        scrollView.contentSize = CGSize(
+            width: frame.width,
+            height: contentHeight
         )
     }
     

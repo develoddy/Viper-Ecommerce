@@ -41,9 +41,11 @@ class ProductDetailView: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         // Establecer el frame de la vista personalizada para que ocupe toda la vista principal
         productDetailItemView.frame = view.bounds
+        productDetailItemView.scrollView.frame = view.bounds
+        
     }
     
     private func setupView() {
