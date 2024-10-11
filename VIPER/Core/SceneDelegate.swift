@@ -102,7 +102,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let window = self.window else { return }
         window.rootViewController = vc
         vc.modalPresentationStyle = .fullScreen
-        UIView.transition(with: window, duration: 0.8, options: .transitionCurlUp, animations: nil)
+        //UIView.transition(with: window, duration: 0.8, options: .transitionCurlUp, animations: nil)
     }
 }
 

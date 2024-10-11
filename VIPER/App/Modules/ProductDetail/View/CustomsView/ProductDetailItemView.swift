@@ -14,6 +14,26 @@ class ProductDetailItemView: UIView {
 
     // MARK: - UI Components
     
+    // Header view con fondo blanco
+    let headerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
+        let closeImage = UIImage(systemName: "xmark", withConfiguration: config)
+        button.setImage(closeImage, for: .normal)
+        button.tintColor = .black // Color del icono
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    
     // ScrollView para toda la vista
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -213,10 +233,27 @@ class ProductDetailItemView: UIView {
         return textField
     }()
     
+
+    /*let closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        // Usamos el icono de sistema "xmark"
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
+        let closeImage = UIImage(systemName: "xmark", withConfiguration: config)
+        
+        button.setImage(closeImage, for: .normal)
+        button.tintColor = .white // Cambia el color del icono si es necesario
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()*/
+
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        setupActions()
     }
     
     required init?(coder: NSCoder) {
@@ -224,6 +261,10 @@ class ProductDetailItemView: UIView {
     }
     
     private func setupView() {
+        
+        // Agregar Header con closeButton
+        addSubview(headerView)
+        headerView.addSubview(closeButton)
         
         // Agregar ScrollView y ContentView
         addSubview(scrollView)
@@ -250,6 +291,21 @@ class ProductDetailItemView: UIView {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        // Constraints del header y closeButton
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 100), // Altura del header
+            
+            closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
+            closeButton.heightAnchor.constraint(equalToConstant: 40)
+            ///closeButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            ///closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+        
         // Constraints del ScrollView y el ContentView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
@@ -266,6 +322,7 @@ class ProductDetailItemView: UIView {
         
         // Configura restricciones para todos los elementos aquí
         NSLayoutConstraint.activate([
+   
             // Constraints para mainImageView
             mainImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             mainImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -331,6 +388,10 @@ class ProductDetailItemView: UIView {
             emailTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             emailTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20) // Asegúrate de que el textField esté alineado al fondo del scrollView
         ])
+    }
+    
+    private func setupActions() {
+        quantityStepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
     }
 
     // MARK: - Actions

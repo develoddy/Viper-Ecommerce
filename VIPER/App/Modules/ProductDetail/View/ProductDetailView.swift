@@ -31,6 +31,14 @@ class ProductDetailView: UIViewController {
         setupView()
         configureCollectionViews()
         presenter?.viewDidLoad()
+        
+        // Añadimos el target para el botón de cerrar
+        productDetailItemView.closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+    }
+                                                    
+    // Método para cerrar la vista
+    @objc private func dismissView() {
+        dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -164,7 +172,6 @@ extension ProductDetailView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == productDetailItemView.thumbnailCollectionView {
             if let selectedImageName = galerias[indexPath.item].imagen {
-                ///print("--> Handle galerias selection: \(selectedImageName)")
                 let imageUrl = URL(string: selectedImageName)
                 self.productDetailItemView.mainImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
             } else {
