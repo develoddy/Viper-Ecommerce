@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SDWebImage
 
 class ProductDetailView: UIViewController {
 
@@ -18,10 +19,10 @@ class ProductDetailView: UIViewController {
     private let productDetailItemView = ProductDetailItemView()
     
     // Miniaturas de las imágenes
-    private let thumbnails = ["image1", "image2", "image3", "image4"]
+    private var galerias: [GaleriaModel] = []
     
     // Datos para productos relacionados
-    private let relatedProducts = ["related1", "related2", "related3", "related4"]
+    private var relatedProducts: [ProductModel] = []
 
     // MARK: Lifecycle
 
@@ -59,9 +60,57 @@ class ProductDetailView: UIViewController {
     }
 }
 
+
+// MARK: - ProductDetailViewProtocol
 extension ProductDetailView: ProductDetailViewProtocol {
-    // TODO: implement view output methods
+    
+    func updateUIList() {
+        DispatchQueue.main.async {
+            // Obtén el producto actual
+           guard let product = self.presenter?.geProduct(), let relatedProducts = self.presenter?.getRelatedProducts() else {
+               return
+           }
+            
+            // Configura la imagen principal
+            if let imageName = product.imagen {
+                let imageUrl = URL(string: imageName)
+                self.productDetailItemView.mainImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
+            } else {
+                self.productDetailItemView.mainImageView.image = nil // O una imagen predeterminada
+            }
+            
+            if let galerias = product.galerias {
+                self.galerias = galerias
+            }
+            
+            self.relatedProducts = relatedProducts
+            
+            self.productDetailItemView.thumbnailCollectionView.reloadData()
+            self.productDetailItemView.relatedProductsCollectionView.reloadData()
+        }
+    }
+    
+    func startActivity() {
+        /**DispatchQueue.main.async {
+            self.homeItemView.activityIndicator.startAnimating()
+            UIView.animate(withDuration: 0.2, animations:  {
+                self.homeItemView.collectionView.alpha = 0.0
+            })
+        }*/
+    }
+    
+    func stopActivity() {
+        /**DispatchQueue.main.asyncAfter(deadline: .now()+4) {
+            self.homeItemView.activityIndicator.stopAnimating()
+            self.homeItemView.activityIndicator.hidesWhenStopped = true
+            UIView.animate(withDuration: 0.2, animations: {
+                self.homeItemView.collectionView.alpha = 1.0
+            })
+        }*/
+    }
 }
+
+
 
 // MARK: - UICollectionViewDelegate
 extension ProductDetailView: UICollectionViewDelegate {
@@ -70,10 +119,10 @@ extension ProductDetailView: UICollectionViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 extension ProductDetailView: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        ///return thumbnails.count
         if collectionView == productDetailItemView.thumbnailCollectionView {
-            return thumbnails.count
+            return galerias.count
         } else if collectionView == productDetailItemView.relatedProductsCollectionView {
             return relatedProducts.count
         }
@@ -81,17 +130,15 @@ extension ProductDetailView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        /**let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier, for: indexPath) as! ThumbnailCell
-        cell.configure(with: thumbnails[indexPath.item])
-        return cell*/
-        
         if collectionView == productDetailItemView.thumbnailCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThumbnailCell.identifier, for: indexPath) as! ThumbnailCell
-            cell.configure(with: thumbnails[indexPath.item])
+            let galeria = galerias[indexPath.item] // Obtener el modelo de galería correspondiente
+            cell.configure(with: galeria) // Pasar el modelo de galería a la celda
             return cell
         } else if collectionView == productDetailItemView.relatedProductsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RelatedProductCell.identifier, for: indexPath) as! RelatedProductCell
-            cell.configure(with: relatedProducts[indexPath.item]) // Asegúrate de que el método `configure` esté implementado en RelatedProductCell
+            let relatedProduct = relatedProducts[indexPath.item] // Obtener el modelo de producto relacionado correspondiente
+            cell.configure(with: relatedProduct) // Pasar el modelo de producto relacionado a la celda
             return cell
         }
         return UICollectionViewCell()
@@ -101,24 +148,26 @@ extension ProductDetailView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ProductDetailView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        ///return CGSize(width: 80, height: 80)
         if collectionView == productDetailItemView.thumbnailCollectionView {
             return CGSize(width: 80, height: 80)
         } else if collectionView == productDetailItemView.relatedProductsCollectionView {
-            return CGSize(width: 100, height: 100) // Ajusta el tamaño según sea necesario
+            return CGSize(width: 100, height: 100)
         }
         return CGSize.zero
     }
     
     // Handle thumbnail selection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        ///let selectedImageName = thumbnails[indexPath.item]
-        ///productDetailItemView.mainImageView.image = UIImage(named: selectedImageName)
         if collectionView == productDetailItemView.thumbnailCollectionView {
-            let selectedImageName = thumbnails[indexPath.item]
-            productDetailItemView.mainImageView.image = UIImage(named: selectedImageName)
+            if let selectedImageName = galerias[indexPath.item].imagen {
+                ///print("--> Handle galerias selection: \(selectedImageName)")
+                let imageUrl = URL(string: selectedImageName)
+                self.productDetailItemView.mainImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
+            } else {
+                self.productDetailItemView.mainImageView.image = nil // O una imagen predeterminada
+            }
         }
-        // Puedes agregar lógica adicional para los productos relacionados si lo deseas
     }
 }
+
 

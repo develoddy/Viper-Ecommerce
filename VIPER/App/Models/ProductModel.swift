@@ -27,7 +27,7 @@ struct ProductModel: Codable {
     let category: CategorieModel? // Agrega la categoría asociada
     
     // Relación con Galeria
-    let galeria: [GaleriaModel]? // Array de galerías asociadas
+    var galerias: [GaleriaModel]? // Array de galerías asociadas
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -45,6 +45,6 @@ struct ProductModel: Codable {
         case tags
         case typeInventario = "type_inventario"
         case category // Para la categoría
-        case galeria // Para las galerías
+        case galerias // Para las galerías
     }
 }

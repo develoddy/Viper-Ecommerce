@@ -73,7 +73,8 @@ class HomeRemoteDataManager:HomeRemoteDataManagerInputProtocol {
                 let viewModel = ProductDetailRenderViewModel(
                     product: productResponse.product,
                     relatedProducts: productResponse.related_products,
-                    saleFlash: productResponse.SALE_FLASH,
+                    //saleFlash: productResponse.SALE_FLASH,
+                    saleFlash: productResponse.SALE_FLASH ?? DiscountModel(id: 0, typeCampaign: 0, typeDiscount: 0, discount: 0, startDate: "", endDate: "", startDateNum: 0, endDateNum: 0, state: 0, typeSegment: 0),  // Valor por defecto si es nil
                     reviews: productResponse.REVIEWS,
                     avgReview: productResponse.AVG_REVIEW,
                     countReview: productResponse.COUNT_REVIEW

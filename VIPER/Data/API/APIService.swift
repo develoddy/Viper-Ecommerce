@@ -83,7 +83,7 @@ class APIService: APIServiceProtocol {
     // fetchProductDetails
     func fetchProductDetails(productId: Int, slug: String, discountId: Int?, completion: @escaping (Result<ProductDetailResponse, Error>) -> Void) {
   
-        ///print("--Debug: APIService: Me llega productId, slug, discountId: \(productId) \(slug) \(String(describing: discountId))")
+        print("--Debug: APIService: Me llega productId, slug, discountId: \(productId) \(slug) \(String(describing: discountId))")
         
         // Construir la URL
         var urlString = "https://api.lujandev.com/api/home/show_landing_product/\(slug)"

@@ -11,7 +11,7 @@ import Foundation
 struct ProductDetailResponse: Codable {
     let product: ProductModel
     let related_products: [ProductModel]
-    let SALE_FLASH: String?
+    let SALE_FLASH: DiscountModel?
     let REVIEWS: [ReviewModel]
     let AVG_REVIEW: Double
     let COUNT_REVIEW: Int
