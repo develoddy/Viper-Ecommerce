@@ -24,8 +24,6 @@ class TabBarWireFrame {
     }
 }
 
-
-
 extension TabBarWireFrame {
     
     static func tabs(unsingSubmodules submodules: Submodules) -> Tabs {

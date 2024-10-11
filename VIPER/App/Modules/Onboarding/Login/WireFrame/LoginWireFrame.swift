@@ -36,9 +36,9 @@ class LoginWireFrame: LoginWireFrameProtocol {
         let submodules = (
             home: HomeWireFrame.createHomeModule(),
             search: UIViewController(),
-            profile: UIViewController(),
+            profile: ProfileWireFrame.createProfileModule(),
             wishlist: UIViewController(),
-            cart: UIViewController()
+            cart: CartWireFrame.createCartModule()
         )
         
         let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
