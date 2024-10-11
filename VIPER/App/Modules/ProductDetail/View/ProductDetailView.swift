@@ -29,15 +29,8 @@ class ProductDetailView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        
-        // Configurar CollectionView delegates
-        productDetailItemView.thumbnailCollectionView.delegate = self
-        productDetailItemView.thumbnailCollectionView.dataSource = self
-        productDetailItemView.thumbnailCollectionView.reloadData()
-        
-        productDetailItemView.relatedProductsCollectionView.delegate = self
-        productDetailItemView.relatedProductsCollectionView.dataSource = self
-        productDetailItemView.relatedProductsCollectionView.reloadData()
+        configureCollectionViews()
+        presenter?.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -52,11 +45,18 @@ class ProductDetailView: UIViewController {
     private func setupView() {
         title = "Detalle del producto"
         view.backgroundColor = .systemBackground
-        
-        // Añadir la vista personalizada a la vista principal
         view.addSubview(productDetailItemView)
+    }
+    
+    // Configurar CollectionView delegates
+    private func configureCollectionViews() {
+        productDetailItemView.thumbnailCollectionView.delegate = self
+        productDetailItemView.thumbnailCollectionView.dataSource = self
+        productDetailItemView.thumbnailCollectionView.reloadData()
         
-        presenter?.viewDidLoad()
+        productDetailItemView.relatedProductsCollectionView.delegate = self
+        productDetailItemView.relatedProductsCollectionView.dataSource = self
+        productDetailItemView.relatedProductsCollectionView.reloadData()
     }
 }
 
@@ -65,31 +65,35 @@ class ProductDetailView: UIViewController {
 extension ProductDetailView: ProductDetailViewProtocol {
     
     func updateUIList() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
             // Obtén el producto actual
-           guard let product = self.presenter?.geProduct(), let relatedProducts = self.presenter?.getRelatedProducts() else {
+            guard let product = self.presenter?.geProduct(), 
+                  let relatedProducts = self.presenter?.getRelatedProducts() else {
                return
-           }
-            
-            // Configura la imagen principal
-            if let imageName = product.imagen {
-                let imageUrl = URL(string: imageName)
-                self.productDetailItemView.mainImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
-            } else {
-                self.productDetailItemView.mainImageView.image = nil // O una imagen predeterminada
             }
-            
-            if let galerias = product.galerias {
-                self.galerias = galerias
-            }
-            
-            self.relatedProducts = relatedProducts
-            
-            self.productDetailItemView.thumbnailCollectionView.reloadData()
-            self.productDetailItemView.relatedProductsCollectionView.reloadData()
+            self.configureUI(with: product, relatedProducts: relatedProducts)
         }
     }
     
+    private func configureUI(with product: ProductModel, relatedProducts: [ProductModel]) {
+        if let imageName = product.imagen, let imageUrl = URL(string: imageName) {
+            productDetailItemView.mainImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder"))
+        } else {
+            productDetailItemView.mainImageView.image = nil
+        }
+
+        productDetailItemView.titleLabel.text = product.title
+        productDetailItemView.priceLabel.text = String(format: "$%.2f", product.priceUsd ?? 0)
+        productDetailItemView.descriptionLabel.text = product.description
+        self.galerias = product.galerias ?? []
+        self.relatedProducts = relatedProducts
+
+        productDetailItemView.thumbnailCollectionView.reloadData()
+        productDetailItemView.relatedProductsCollectionView.reloadData()
+    }
+
     func startActivity() {
         /**DispatchQueue.main.async {
             self.homeItemView.activityIndicator.startAnimating()
@@ -113,20 +117,19 @@ extension ProductDetailView: ProductDetailViewProtocol {
 
 
 // MARK: - UICollectionViewDelegate
-extension ProductDetailView: UICollectionViewDelegate {
-    
-}
+extension ProductDetailView: UICollectionViewDelegate {}
 
 // MARK: - UICollectionViewDataSource
 extension ProductDetailView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == productDetailItemView.thumbnailCollectionView {
+        /**if collectionView == productDetailItemView.thumbnailCollectionView {
             return galerias.count
         } else if collectionView == productDetailItemView.relatedProductsCollectionView {
             return relatedProducts.count
         }
-        return 0
+        return 0*/
+        return collectionView == productDetailItemView.thumbnailCollectionView ? galerias.count : relatedProducts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -148,12 +151,13 @@ extension ProductDetailView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ProductDetailView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == productDetailItemView.thumbnailCollectionView {
+        /**if collectionView == productDetailItemView.thumbnailCollectionView {
             return CGSize(width: 80, height: 80)
         } else if collectionView == productDetailItemView.relatedProductsCollectionView {
-            return CGSize(width: 100, height: 100)
+            return CGSize(width: 200, height: 250)
         }
-        return CGSize.zero
+        return CGSize.zero*/
+        return collectionView == productDetailItemView.thumbnailCollectionView ? CGSize(width: 80, height: 80) : CGSize(width: 200, height: 250)
     }
     
     // Handle thumbnail selection

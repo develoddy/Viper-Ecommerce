@@ -174,12 +174,21 @@ class ProductDetailItemView: UIView {
         return stackView
     }()
     
+    // Nuevo UILabel para promociones
+    let titleRelatedProductsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "PRODUCTOS RELACIONADOS"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
     // 1. Agrega la propiedad para el UICollectionView de productos relacionados
     var relatedProductsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = 5
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
@@ -230,6 +239,7 @@ class ProductDetailItemView: UIView {
             colorsStackView,
             sizesStackView,
             actionStackView,
+            titleRelatedProductsLabel,
             relatedProductsCollectionView,
             promotionsLabel,
             emailTextField
@@ -260,7 +270,7 @@ class ProductDetailItemView: UIView {
             mainImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             mainImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainImageView.heightAnchor.constraint(equalToConstant: 200), // Altura fija
+            mainImageView.heightAnchor.constraint(equalToConstant: 400), // Altura fija
             //mainImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
             
             // Constraints para thumbnailCollectionView
@@ -299,11 +309,16 @@ class ProductDetailItemView: UIView {
             actionStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             actionStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
+            // Constraints para titleRelatedProductsLabel
+            titleRelatedProductsLabel.topAnchor.constraint(equalTo: actionStackView.bottomAnchor, constant: 20),
+            titleRelatedProductsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            titleRelatedProductsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
             // Constraints para relatedProductsCollectionView
-            relatedProductsCollectionView.topAnchor.constraint(equalTo: actionStackView.bottomAnchor, constant: 20),
+            relatedProductsCollectionView.topAnchor.constraint(equalTo: titleRelatedProductsLabel.bottomAnchor, constant: 20),
             relatedProductsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             relatedProductsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            relatedProductsCollectionView.heightAnchor.constraint(equalToConstant: 100),
+            relatedProductsCollectionView.heightAnchor.constraint(equalToConstant: 250),
             
             // Constraints para promotionsLabel
             promotionsLabel.topAnchor.constraint(equalTo: relatedProductsCollectionView.bottomAnchor, constant: 20),
