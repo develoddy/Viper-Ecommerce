@@ -13,27 +13,7 @@ import UIKit
 class ProductDetailItemView: UIView {
 
     // MARK: - UI Components
-    
-    // Header view con fondo blanco
-    let headerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let closeButton: UIButton = {
-        let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
-        let closeImage = UIImage(systemName: "xmark", withConfiguration: config)
-        button.setImage(closeImage, for: .normal)
-        button.tintColor = .black // Color del icono
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-
-    
+ 
     // ScrollView para toda la vista
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -47,6 +27,30 @@ class ProductDetailItemView: UIView {
        view.translatesAutoresizingMaskIntoConstraints = false
        return view
     }()
+    
+    // Título de la vista
+    ///let titleViewLabel: UILabel = {
+    ///    let label = UILabel()
+    ///    label.font = UIFont.boldSystemFont(ofSize: 18)
+    ///    label.textAlignment = .center
+    ///    label.numberOfLines = 1
+    ///    label.text = "Detalles del Producto" // Cambia el texto según sea necesario
+    ///    label.textColor = .black // Color del texto
+    ///    return label
+    ///}()
+    ///
+    
+    /// Botón de cerrar
+    ///let closeButton: UIButton = {
+    ///    let button = UIButton(type: .system)
+    ///    // Usamos el icono de sistema "xmark"
+    ///    let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
+    ///    let closeImage = UIImage(systemName: "xmark", withConfiguration: config)
+    ///    button.setImage(closeImage, for: .normal)
+    ///    button.tintColor = .black
+    ///    button.translatesAutoresizingMaskIntoConstraints = false
+    ///    return button
+    ///}()
     
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
@@ -233,27 +237,12 @@ class ProductDetailItemView: UIView {
         return textField
     }()
     
-
-    /*let closeButton: UIButton = {
-        let button = UIButton(type: .system)
-        
-        // Usamos el icono de sistema "xmark"
-        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold)
-        let closeImage = UIImage(systemName: "xmark", withConfiguration: config)
-        
-        button.setImage(closeImage, for: .normal)
-        button.tintColor = .white // Cambia el color del icono si es necesario
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()*/
-
-    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
         setupActions()
+    
     }
     
     required init?(coder: NSCoder) {
@@ -261,17 +250,14 @@ class ProductDetailItemView: UIView {
     }
     
     private func setupView() {
-        
-        // Agregar Header con closeButton
-        addSubview(headerView)
-        headerView.addSubview(closeButton)
-        
         // Agregar ScrollView y ContentView
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
         // Agregar todos los subviews al scrollView
         let views: [UIView] = [
+            ///titleViewLabel,
+            ///closeButton,
             mainImageView,
             thumbnailCollectionView,
             titleLabel,
@@ -290,22 +276,7 @@ class ProductDetailItemView: UIView {
             contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        
-        // Constraints del header y closeButton
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 100), // Altura del header
-            
-            closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
-            closeButton.widthAnchor.constraint(equalToConstant: 40),
-            closeButton.heightAnchor.constraint(equalToConstant: 40)
-            ///closeButton.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            ///closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
-        ])
-        
+    
         // Constraints del ScrollView y el ContentView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
@@ -317,7 +288,19 @@ class ProductDetailItemView: UIView {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor) // El ancho del contentView es igual al del scrollView
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            
+            /// Ajusta aquí la posición del closeButton
+            ///closeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20), // Espacio arriba
+            ///closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20), // Alinear a la derecha
+
+            ///titleViewLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20), // Espacio entre contentView y titleLabel
+            ///titleViewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20), // Alinear a la izquierda
+            ///titleViewLabel.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -10), // Alinear a la izquierda del closeButton
+
+            /// Asegúrate de que el titleLabel esté centrado verticalmente
+            ///titleViewLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor)
         ])
         
         // Configura restricciones para todos los elementos aquí
@@ -328,7 +311,6 @@ class ProductDetailItemView: UIView {
             mainImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mainImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             mainImageView.heightAnchor.constraint(equalToConstant: 400), // Altura fija
-            //mainImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
             
             // Constraints para thumbnailCollectionView
             thumbnailCollectionView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: 10),

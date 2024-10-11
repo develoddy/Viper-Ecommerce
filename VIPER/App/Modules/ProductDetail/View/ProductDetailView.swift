@@ -32,14 +32,14 @@ class ProductDetailView: UIViewController {
         configureCollectionViews()
         presenter?.viewDidLoad()
         
-        // Añadimos el target para el botón de cerrar
-        productDetailItemView.closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        ///Añadimos el target para el botón de cerrar
+        ///productDetailItemView.closeButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
     }
                                                     
     // Método para cerrar la vista
-    @objc private func dismissView() {
-        dismiss(animated: true, completion: nil)
-    }
+    ///@objc private func dismissView() {
+    ///    dismiss(animated: true, completion: nil)
+    ///}
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -54,7 +54,13 @@ class ProductDetailView: UIViewController {
         title = "Detalle del producto"
         view.backgroundColor = .systemBackground
         view.addSubview(productDetailItemView)
+        
     }
+    
+    @objc
+       private func nextViewController() {
+           print("Presenta View Controller B")
+       }
     
     // Configurar CollectionView delegates
     private func configureCollectionViews() {

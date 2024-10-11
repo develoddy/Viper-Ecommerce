@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()*/
         } else {
             let window                  = UIWindow(windowScene: windowScene)
-            let viewController     = LoginWireFrame.createLoginModule() //LoginWireFrame.createLoginModule()
+            let viewController = LoginWireFrame.createLoginModule()
             viewController.modalPresentationStyle = .fullScreen
             window.rootViewController   = viewController
             self.window                 = window

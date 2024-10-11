@@ -35,18 +35,40 @@ extension TabBarWireFrame {
         let wishlistTabBarItem = UITabBarItem(title: "favoritos", image: UIImage(systemName: "heart"), tag: 14)
         let cartTabBarItem = UITabBarItem(title: "Carrito", image: UIImage(systemName: "cart"), tag: 15)
         
-        submodules.home.tabBarItem = homeTabBarItem
+        // Envolver cada controlador en un UINavigationController
+        let homeNavController = UINavigationController(rootViewController: submodules.home)
+        let profileNavController = UINavigationController(rootViewController: submodules.profile)
+        let searchNavController = UINavigationController(rootViewController: submodules.search)
+        let wishlistNavController = UINavigationController(rootViewController: submodules.wishlist)
+        let cartNavController = UINavigationController(rootViewController: submodules.cart)
+        
+        /**submodules.home.tabBarItem = homeTabBarItem
         submodules.profile.tabBarItem = profileTabBarItem
         submodules.search.tabBarItem = searchTabBarItem
         submodules.wishlist.tabBarItem = wishlistTabBarItem
-        submodules.cart.tabBarItem = cartTabBarItem
+        submodules.cart.tabBarItem = cartTabBarItem*/
+        
+        // Asignar los UITabBarItem a cada controlador
+        homeNavController.tabBarItem = homeTabBarItem
+        profileNavController.tabBarItem = profileTabBarItem
+        searchNavController.tabBarItem = searchTabBarItem
+        wishlistNavController.tabBarItem = wishlistTabBarItem
+        cartNavController.tabBarItem = cartTabBarItem
         
         return (
+            home: homeNavController,
+            search: searchNavController,
+            profile: profileNavController,
+            wishlist: wishlistNavController,
+            cart: cartNavController
+        )
+        
+        /**return (
             home: submodules.home,
             search: submodules.search,
             profile: submodules.profile,
             wishlist: submodules.wishlist,
             cart: submodules.cart
-        )
+        )*/
     }
 }
