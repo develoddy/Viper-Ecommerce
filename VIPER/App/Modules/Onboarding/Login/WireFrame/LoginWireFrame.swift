@@ -37,7 +37,7 @@ class LoginWireFrame: LoginWireFrameProtocol {
             home: HomeWireFrame.createHomeModule(),
             search: UIViewController(),
             profile: ProfileWireFrame.createProfileModule(),
-            wishlist: UIViewController(),
+            wishlist: WishlistWireFrame.createWishlistModule(),
             cart: CartWireFrame.createCartModule()
         )
         
