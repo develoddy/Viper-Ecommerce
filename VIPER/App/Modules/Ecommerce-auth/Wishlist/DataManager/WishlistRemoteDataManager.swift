@@ -16,10 +16,10 @@ class WishlistRemoteDataManager:WishlistRemoteDataManagerInputProtocol {
     //var wishlistItems: [WishlistResponse] = []
     
     // We defined the FakeAPIServiceProtocol in the APIService.swift file.
-    let apiService: APIServiceProtocol
+    let apiService: APIServiceWishlistPrtocol
     
     // MARK: - CONSTRUCTOR
-    init(apiService: APIServiceProtocol = APIService()) {
+    init(apiService: APIServiceWishlistPrtocol = APIServiceWishlist()) {
         self.apiService = apiService
     }
     

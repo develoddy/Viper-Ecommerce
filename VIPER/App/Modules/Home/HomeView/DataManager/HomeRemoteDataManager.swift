@@ -14,14 +14,14 @@ class HomeRemoteDataManager:HomeRemoteDataManagerInputProtocol {
     var remoteRequestHandler: HomeRemoteDataManagerOutputProtocol?
     
     // We defined the FakeAPIServiceProtocol in the APIService.swift file.
-    let apiService: APIServiceProtocol
+    let apiService: APIServiceEcommerceGuestPrtocol
     
     // The collection that will contain our fetched data
     var models: [HomeFeedRenderViewModel] = []
   
     
     // MARK: - CONSTRUCTOR
-    init(apiService: APIServiceProtocol = APIService()) {
+    init(apiService: APIServiceEcommerceGuestPrtocol = APIServiceEcommerceGuest()) {
         self.apiService = apiService
     }
     

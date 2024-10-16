@@ -14,9 +14,20 @@ class CartInteractor: CartInteractorInputProtocol {
     weak var presenter: CartInteractorOutputProtocol?
     var localDatamanager: CartLocalDataManagerInputProtocol?
     var remoteDatamanager: CartRemoteDataManagerInputProtocol?
-
+    
+    func fetchCarts(with userId: Int) {
+        remoteDatamanager?.fetchCarts(with: userId)
+    }
 }
 
 extension CartInteractor: CartRemoteDataManagerOutputProtocol {
+    
     // TODO: Implement use case methods
+    func onCartsRetrieved(with cartResponse: CartsAPIResponse) {
+        presenter?.didRetrieveCarts(cartResponse)
+    }
+    
+    func onError(_ error: Error) {
+        presenter?.didFailToRetrieveCarts(with: error)
+    }
 }

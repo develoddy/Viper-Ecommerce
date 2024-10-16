@@ -12,10 +12,10 @@ class ProductDetailRemoteDataManager:ProductDetailRemoteDataManagerInputProtocol
 
     var remoteRequestHandler: ProductDetailRemoteDataManagerOutputProtocol?
     
-    let apiService: APIServiceProtocol
+    let apiService: APIServiceEcommerceGuestPrtocol
     
     // MARK: - CONSTRUCTOR
-    init(apiService: APIServiceProtocol = APIService()) {
+    init(apiService: APIServiceEcommerceGuestPrtocol = APIServiceEcommerceGuest()) {
         self.apiService = apiService
     }
     

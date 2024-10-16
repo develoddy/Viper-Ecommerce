@@ -65,7 +65,20 @@ class CartView: UIViewController {
 }
 
 extension CartView: CartViewProtocol {
+    
     // TODO: implement view output methods
+    func updateUIList() {
+        DispatchQueue.main.async {
+            //self.homeUI.tableView.reloadData()
+            print("Actualizando la UI Carts...")
+            self.cartItemsCollectionView.collectionView.reloadData() // Asegúrate de que hay un método en HomeItemView para recargar datos
+        }
+    }
+    
+    func onError(_ error: Error) {
+        print("Error in View fetching Carts: \(error.localizedDescription)")
+    }
+
 }
 
 
@@ -74,13 +87,19 @@ extension CartView: CartViewProtocol {
 extension CartView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10 ///cartItemsCollectionView.products.count
+        return presenter?.numberOfItems() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartProductCell", for: indexPath) as! CartProductCell
         //let product = products[indexPath.item]
         //cell.configure(with: product)
+        if let item = presenter?.getItem(at: indexPath.item) {
+            /// Configurar la celda con datos de producto
+            let product = item.product
+            /// Asegúrate de que tu celda tenga un método configure para establecer estos valores
+            cell.configure(with: product)
+        }
         cell.backgroundColor = .systemGray3
         return cell
     }

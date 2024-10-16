@@ -104,12 +104,19 @@ class CartProductCell: UICollectionViewCell {
     }
     
     // MARK: - Configure Cell
-    func configure(with product: ProductModel) {
+    //func configure(with product: ProductModel) {
+    func configure(with product: ProductAPIModel) {
         /*productImageView.image = UIImage(named: product.imageName)
         productNameLabel.text = product.name
         priceLabel.text = "€\(product.price)"
         quantityLabel.text = "Cantidad: \(product.quantity)"
         sizeLabel.text = "Talla: \(product.size)"
         colorLabel.text = "Color: \(product.color)"*/
+        
+        if let imageUrlString = product.imagen, let imageUrl = URL(string: imageUrlString) {
+            productImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder")) // Establece una imagen de marcador de posición si es necesario
+        } else {
+            productImageView.image = nil
+        }
     }
 }

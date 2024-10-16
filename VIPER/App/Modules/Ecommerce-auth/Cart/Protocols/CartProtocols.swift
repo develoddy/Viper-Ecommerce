@@ -12,6 +12,8 @@ import UIKit
 protocol CartViewProtocol: AnyObject {
     // PRESENTER -> VIEW
     var presenter: CartPresenterProtocol? { get set }
+    func updateUIList()
+    func onError(_ error: Error)
 }
 
 protocol CartWireFrameProtocol: AnyObject {
@@ -26,10 +28,16 @@ protocol CartPresenterProtocol: AnyObject {
     var wireFrame: CartWireFrameProtocol? { get set }
     
     func viewDidLoad()
+    
+    func numberOfItems() -> Int
+    func getItem(at index: Int) -> CartAPIResponse?
+    func didSelectProduct(at index: Int)
 }
 
 protocol CartInteractorOutputProtocol: AnyObject {
     // INTERACTOR -> PRESENTER
+    func didRetrieveCarts(_ cartstResponse: CartsAPIResponse)
+    func didFailToRetrieveCarts(with error: Error)
 }
 
 protocol CartInteractorInputProtocol: AnyObject {
@@ -37,6 +45,8 @@ protocol CartInteractorInputProtocol: AnyObject {
     var presenter: CartInteractorOutputProtocol? { get set }
     var localDatamanager: CartLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: CartRemoteDataManagerInputProtocol? { get set }
+    
+    func fetchCarts(with userId: Int)
 }
 
 protocol CartDataManagerInputProtocol: AnyObject {
@@ -46,10 +56,13 @@ protocol CartDataManagerInputProtocol: AnyObject {
 protocol CartRemoteDataManagerInputProtocol: AnyObject {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: CartRemoteDataManagerOutputProtocol? { get set }
+    func fetchCarts(with userId: Int)
 }
 
 protocol CartRemoteDataManagerOutputProtocol: AnyObject {
     // REMOTEDATAMANAGER -> INTERACTOR
+    func onCartsRetrieved(with cartResponse: CartsAPIResponse)
+    func onError(_ error: Error)
 }
 
 protocol CartLocalDataManagerInputProtocol: AnyObject {
