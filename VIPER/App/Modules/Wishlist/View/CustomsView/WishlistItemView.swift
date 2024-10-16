@@ -13,9 +13,12 @@ class WishlistItemView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 10
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 2) - 5, height: 250) // Ajusta para ocupar más ancho
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 5
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width / 2) - 2, height: 350) // Aumentar la altura a 300
+        
+        // Definir el tamaño del header
+        layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: 80)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
@@ -39,7 +42,9 @@ class WishlistItemView: UIView {
         addSubview(collectionView)
         
         // Constraints para que el UICollectionView ocupe toda la vista
+        ///// Constraints para que el UICollectionView tenga más espacio en la parte superior
         NSLayoutConstraint.activate([
+            ///collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 120),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -49,11 +54,11 @@ class WishlistItemView: UIView {
     
     // Configuración del UICollectionView
     private func configureCollectionView() {
-        ///collectionView.dataSource = self
-        ///collectionView.delegate = self
-        
         // Registrar la celda personalizada
         collectionView.register(WishlistItemCell.self, forCellWithReuseIdentifier: WishlistItemCell.identifier)
+        
+        // Registrar el header
+        collectionView.register(WishlistHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WishlistHeaderView.identifier)
     }
 }
 

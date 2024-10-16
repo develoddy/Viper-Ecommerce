@@ -6,8 +6,7 @@
 //
 
 import UIKit
-
-import UIKit
+import SDWebImage
 
 class WishlistItemCell: UICollectionViewCell {
     
@@ -27,10 +26,10 @@ class WishlistItemCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .label
-        label.text = "titulo de producto"
-        label.backgroundColor = .systemIndigo
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = .black
+        ///label.text = "titulo de producto"
+        //label.backgroundColor = .systemIndigo
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -38,9 +37,9 @@ class WishlistItemCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .systemGray
-        label.text = "$99.99"
-        label.backgroundColor = .systemGray
+        label.textColor = .black
+        ///label.text = "$99.99"
+        //label.backgroundColor = .systemGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -48,7 +47,7 @@ class WishlistItemCell: UICollectionViewCell {
     private let favoriteIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "heart.fill")
-        imageView.tintColor = .systemRed
+        imageView.tintColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -62,7 +61,7 @@ class WishlistItemCell: UICollectionViewCell {
         button.setTitleColor(.black, for: .normal)  // Texto negro
         button.layer.borderColor = UIColor.black.cgColor  // Borde negro
         button.layer.borderWidth = 1  // Grosor del borde
-        
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -92,7 +91,7 @@ class WishlistItemCell: UICollectionViewCell {
             productImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             productImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             productImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            productImageView.heightAnchor.constraint(equalToConstant: 150),
+            productImageView.heightAnchor.constraint(equalToConstant: 230),
             
             titleLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -119,9 +118,16 @@ class WishlistItemCell: UICollectionViewCell {
     }
     
     // Método para configurar los datos de la celda
-    func configure(with product: ProductModel) {
-        //productImageView.image = product.image
-        //titleLabel.text = product.title
-        //priceLabel.text = "$\(product.price)"
+    func configure(with product: ProductModelResponse) {
+        /// productImageView.image = product.image
+        titleLabel.text = product.title
+        print("product.priceUsd: \(product.priceUsd)")
+        priceLabel.text = "$\(product.priceUsd)"
+        
+        if let imageUrlString = product.imagen, let imageUrl = URL(string: imageUrlString) {
+            productImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder")) // Establece una imagen de marcador de posición si es necesario
+        } else {
+            productImageView.image = nil
+        }
     }
 }
