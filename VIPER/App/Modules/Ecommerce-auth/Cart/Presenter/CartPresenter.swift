@@ -56,7 +56,7 @@ extension CartPresenter: CartInteractorOutputProtocol {
     // TODO: implement interactor output methods
     func didRetrieveCarts(_ cartstResponse: CartsAPIResponse) {
         cartsItems = cartstResponse.carts
-        print("-- CartPresenter cartsItems : \(cartsItems)")
+        view?.updateFooter(with: cartstResponse)
     }
     
     func didFailToRetrieveCarts(with error: Error) {

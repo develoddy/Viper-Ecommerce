@@ -16,7 +16,7 @@ class CartView: UIViewController {
     
     private let cartFooterView = CartFooterView()
     
-    private let cartItemsCollectionView = CartItemsCollectionView()
+    private let cartItemView = CartItemView()
 
     // MARK: Lifecycle
 
@@ -28,10 +28,10 @@ class CartView: UIViewController {
     
     private func setupView() {
         title = "Carrito de compra"
-        view.backgroundColor = .systemGray
+        view.backgroundColor = .systemBackground
         
         // Añadir subviews
-        view.addSubview(cartItemsCollectionView)
+        view.addSubview(cartItemView)
         view.addSubview(cartFooterView)
         
         // Configurar restricciones
@@ -40,15 +40,15 @@ class CartView: UIViewController {
     }
     
     private func setupConstraints() {
-        cartItemsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        cartItemView.translatesAutoresizingMaskIntoConstraints = false
         cartFooterView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             // CartItemsCollectionView constraints
-            cartItemsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            cartItemsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            cartItemsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cartItemsCollectionView.bottomAnchor.constraint(equalTo: cartFooterView.topAnchor),
+            cartItemView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            cartItemView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cartItemView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cartItemView.bottomAnchor.constraint(equalTo: cartFooterView.topAnchor),
             
             // CartFooterView constraints
             cartFooterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -59,8 +59,8 @@ class CartView: UIViewController {
     }
     
     func configureCollections() {
-        cartItemsCollectionView.collectionView.dataSource = self
-        cartItemsCollectionView.collectionView.delegate = self
+        cartItemView.collectionView.dataSource = self
+        cartItemView.collectionView.delegate = self
     }
 }
 
@@ -71,10 +71,17 @@ extension CartView: CartViewProtocol {
         DispatchQueue.main.async {
             //self.homeUI.tableView.reloadData()
             print("Actualizando la UI Carts...")
-            self.cartItemsCollectionView.collectionView.reloadData() // Asegúrate de que hay un método en HomeItemView para recargar datos
+            self.cartItemView.collectionView.reloadData() // Asegúrate de que hay un método en HomeItemView para recargar datos
         }
     }
     
+    func updateFooter(with carts: CartsAPIResponse) {
+        DispatchQueue.main.async {
+            self.cartFooterView.configure(with: carts)
+        }
+    }
+    
+  
     func onError(_ error: Error) {
         print("Error in View fetching Carts: \(error.localizedDescription)")
     }
@@ -92,15 +99,13 @@ extension CartView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartProductCell", for: indexPath) as! CartProductCell
-        //let product = products[indexPath.item]
-        //cell.configure(with: product)
         if let item = presenter?.getItem(at: indexPath.item) {
-            /// Configurar la celda con datos de producto
-            let product = item.product
-            /// Asegúrate de que tu celda tenga un método configure para establecer estos valores
-            cell.configure(with: product)
+            ///let product = item.product
+            //cell.configure(with: product)
+            
+            cell.configure(with: item)
         }
-        cell.backgroundColor = .systemGray3
+        cell.backgroundColor = .systemBackground
         return cell
     }
 }

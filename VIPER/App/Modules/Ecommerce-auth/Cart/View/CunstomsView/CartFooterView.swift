@@ -12,7 +12,7 @@ class CartFooterView: UIView {
     // MARK: - Subviews
     private let subtotalLabel: UILabel = {
         let label = UILabel()
-        label.text = "Subtotal: €150.99"
+        ///label.text = "Subtotal: €150.99"
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -28,7 +28,7 @@ class CartFooterView: UIView {
     
     private let totalLabel: UILabel = {
         let label = UILabel()
-        label.text = "Total: €200.99"
+        ///label.text = "Total: €200.99"
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -39,8 +39,8 @@ class CartFooterView: UIView {
         button.setTitle("Comenzar pedido", for: .normal)
         button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.layer.cornerRadius = 8
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.layer.cornerRadius = 0
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -105,5 +105,32 @@ class CartFooterView: UIView {
             checkoutButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16),
             checkoutButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    func configure(with cart: CartsAPIResponse) {
+        /*if let subtotal = cart.subtotal {
+            subtotalLabel.text = "Cantidad: \(String(describing: subtotal))"
+        }
+        
+        if let total = cart.total {
+            subtotalLabel.text = "Cantidad: \(String(describing: total))"
+        }*/
+        
+        // Suponiendo que cart contiene un array de productos, y cada producto tiene un campo `total` como String opcional
+        let totalAmount = cart.carts.reduce(0.0) { (sum, item) -> Double in
+            // Convertir el String a Double y usar 0.0 si la conversión falla
+            if let totalString = item.total, let totalValue = Double(totalString) {
+                return sum + totalValue
+            } else {
+                return sum
+            }
+        }
+        
+        // Redondear el total a dos decimales
+        let formattedTotal = String(format: "%.2f", totalAmount)
+        
+        // Actualizar el subtotal y total en las etiquetas
+        subtotalLabel.text = "Subtotal: €\(formattedTotal)"
+        totalLabel.text = "Total: €\(formattedTotal)"
     }
 }

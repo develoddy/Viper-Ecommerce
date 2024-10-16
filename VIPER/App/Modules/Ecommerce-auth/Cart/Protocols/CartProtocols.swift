@@ -13,6 +13,7 @@ protocol CartViewProtocol: AnyObject {
     // PRESENTER -> VIEW
     var presenter: CartPresenterProtocol? { get set }
     func updateUIList()
+    func updateFooter(with cart: CartsAPIResponse)
     func onError(_ error: Error)
 }
 

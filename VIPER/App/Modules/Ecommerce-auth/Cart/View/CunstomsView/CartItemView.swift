@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CartItemsCollectionView: UIView {
+class CartItemView: UIView {
 
     // MARK: - Properties
     var products: [ProductModel] = [] {
@@ -20,8 +20,8 @@ class CartItemsCollectionView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 120)
-        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 250)
+        layout.minimumLineSpacing = 5
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear

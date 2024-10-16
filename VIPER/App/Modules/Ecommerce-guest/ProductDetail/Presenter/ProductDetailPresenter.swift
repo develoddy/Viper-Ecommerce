@@ -10,10 +10,6 @@ import Foundation
 
 class ProductDetailPresenter: ProductDetailPresenterProtocol {
   
-    
-    
-    
-
     // MARK: Properties
     weak var view: ProductDetailViewProtocol?
     var interactor: ProductDetailInteractorInputProtocol?
@@ -39,11 +35,6 @@ class ProductDetailPresenter: ProductDetailPresenterProtocol {
     
     // TODO: implement presenter methods
     func viewDidLoad() {
-        
-        //view?.updateUI(with: viewModel.product) // Pasar los datos del producto a la vista
-        
-        //print("ProductDetailPresenter - viewDidLoad: productId: \(String(describing: productId)), slug: \(String(describing: slug)), discountId: \(String(describing: discountId))")
-               
        // Llama al interactor para obtener los detalles del producto
        if let productId = productId, let slug = slug {
            interactor?.fetchProductDetails(with: productId, with: slug, with: discountId) //fetchProductDetails(by: productId)
