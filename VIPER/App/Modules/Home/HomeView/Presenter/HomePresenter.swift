@@ -17,17 +17,10 @@ class HomePresenter  {
     var wireFrame: HomeWireFrameProtocol?
     
     // MARK: - Closures
-    /**var viewModel: [HomeFeedRenderViewModel] = [] {
+    var ourProducts: [ProductModel] = [] {
         didSet {
             self.view?.updateUIList()
         }
-    }*/
-    
-    // Modelo de vista actualizado
-    var viewModel = HomeFeedRenderViewModel(categories: [], sliders: [], ourProducts: [], bestProducts: []) {
-       didSet {
-           self.view?.updateUIList()
-       }
     }
 }
 
@@ -36,64 +29,31 @@ class HomePresenter  {
 extension HomePresenter: HomePresenterProtocol {
     
     func viewDidLoad() {
-        // DECIRLE AL INTERACTOR QUE QUIERE TRAER UNOS DATOS
+        // Llamar al interactor
         self.interactor?.interactorGetData()
         view?.startActivity()
     }
     
-    func numberOfSections() -> Int {
-        return 2 // Una sección para categorías y otra para productos
+    func numberOfItems() -> Int {
+        return ourProducts.count // Devuelve el número de items en los productos
     }
     
-    func numberOfItems(in section: Int) -> Int {
-        switch section {
-        case 0:
-            return viewModel.categories.count // Número de categorías
-        case 1:
-            return viewModel.ourProducts.count // Número de productos
-        default:
-            return 0
-        }
+    func getItem(at index: Int) -> ProductModel? {
+        guard index < ourProducts.count else { return nil }
+        return ourProducts[index] // Devuelve el item correspondiente al índice
     }
     
-    func getItem(at index: Int, in section: Int) -> HomeRenderType? {
-        switch section {
-        case 0: // Sección de categorías
-            guard index < viewModel.categories.count else { return nil }
-            return HomeRenderType.categories(provider: viewModel.categories[index])
-        case 1: // Sección de productos
-            guard index < viewModel.ourProducts.count else { return nil }
-            return HomeRenderType.produtcs(provider: viewModel.ourProducts[index])
-        default:
-            return nil
+    // Método para navegar a los detalles del producto
+    func didSelectProduct(at index: Int, at discountId: Int) {
+        guard let item = getItem(at: index) else { return }
+        
+        if let id = item.id, let slug = item.slug  {
+            wireFrame?.navigateToProductDetail(from: view, with: id, slug: slug, discountId: discountId)
         }
     }
     
     func filterOptions() {
         wireFrame?.navigateToFilterOptionsView()
-    }
-    
-    // Pasar datos del producto al interactor
-    //func didSelectProduct(at index: Int, at discountId: Int) {
-        ///print("DEbbug: Presenter didSelectProduct: me llega el index de produc: \(index)")
-        // Obtener el id del producto de viewModel
-    //    if let productId = viewModel.ourProducts[index].id, let slug = viewModel.ourProducts[index].slug {
-            ///print("DEbbug: Presenter En base al index, obtego el id del producto: \(productId)")
-    //        interactor?.fetchProductDetails(with: productId, with: slug, with: discountId) // Llamar al interactor para obtener detalles del producto
-    //    } else {
-    //        print("Error: El ID del producto es nil")
-    //    }
-    //}
-    
-    // Pasar datos del producto al módulo de detalle
-    func didSelectProduct(at index: Int, at discountId: Int) {
-        if let productId = viewModel.ourProducts[index].id, let slug = viewModel.ourProducts[index].slug {
-            // Llamar al wireframe para navegar a la vista de detalle del producto
-            //wireFrame?.navigateToDetailProduct(from: view, with: productId, slug: slug, discountId: discountId)
-            wireFrame?.navigateToProductDetail(from: view, with: productId, slug: slug, discountId: discountId)
-        } else {
-            print("Error: El ID del producto es nil")
-        }
     }
 }
 
@@ -103,7 +63,11 @@ extension HomePresenter: HomeInteractorOutputProtocol {
     
     // EL PRESENTER RECIBE EL ARRAY DE OBJETOS QUE ENVIA EL INTERACTOR
     func interactorCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel) {
-        viewModel = homeFeedRenderViewModel
+        ///viewModel = homeFeedRenderViewModel
+        ourProducts = homeFeedRenderViewModel.ourProducts
+        // Aqui puedes seguir asignado los datos del api en una variable
+        ///categories = homeFeedRenderViewModel.categories
+        ///besProducts = homeFeedRenderViewModel.bestProducts
         view?.stopActivity()
         view?.updateUIList()
     }
@@ -117,6 +81,12 @@ extension HomePresenter: HomeInteractorOutputProtocol {
         } else {
             print("Error: la vista es nil, no se puede navegar.")
         }*/
+    }
+    
+    func didFailToRetrieveWishlist(with error: Error) {
+        ///view?.stopActivity() // Detener indicador de carga
+        view?.onError(error) // Mostrar el error en la vista
+        
     }
     
 }

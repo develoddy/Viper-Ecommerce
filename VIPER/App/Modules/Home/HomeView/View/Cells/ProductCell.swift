@@ -17,12 +17,13 @@ class ProductCell: UICollectionViewCell {
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.backgroundColor = .systemPink
         return iv
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -30,8 +31,8 @@ class ProductCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,23 +58,36 @@ class ProductCell: UICollectionViewCell {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), // Ajustar según sea necesario
+            //imageView.heightAnchor.constraint(equalToConstant: 250),
+            ///imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), // Ajustar según sea necesario
 
             // Configuración del título
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 2.0),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2.0),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2.0),
-            titleLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1), // Ajustar según sea necesario
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            ///titleLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1), // Ajustar según sea necesario
 
             // Configuración del precio
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2.0),
-            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2.0),
-            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2.0),
-            priceLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1) // Ajustar según sea necesario
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            ///priceLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1) // Ajustar según sea necesario
         ])
     }
     
-    func configure(with product: ProductModel) {
+    // Método para establecer la altura de la imagen
+    func setImageHeight(_ height: CGFloat) {
+        // Elimina la constraint existente para evitar conflictos
+        if let existingConstraint = imageView.constraints.first(where: { $0.firstAttribute == .height }) {
+            existingConstraint.isActive = false
+        }
+        
+        // Establece una nueva constraint para la altura
+        imageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        layoutIfNeeded() // Actualiza el layout
+    }
+    
+    func configure(with product: ProductModel, showDetails: Bool) {
         titleLabel.text = product.title ?? "Sin título"
         
         if let price = product.priceUsd {
@@ -88,7 +102,8 @@ class ProductCell: UICollectionViewCell {
             imageView.image = nil
         }
         
-        // Asignar color de fondo a la celda
-        contentView.backgroundColor = .lightGray
+        // Oculta o muestra los detalles según el modo de visualización
+        titleLabel.isHidden = !showDetails
+        priceLabel.isHidden = !showDetails
     }
 }

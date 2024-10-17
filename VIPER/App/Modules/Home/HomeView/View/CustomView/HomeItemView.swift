@@ -24,15 +24,13 @@ class HomeItemView: UIView {
     }()
     
     public let collectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
-       layout.minimumLineSpacing = 10
-       layout.minimumInteritemSpacing = 10
-       // Configura los insets de la sección
-       layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       collectionView.translatesAutoresizingMaskIntoConstraints = false
-       
-       return collectionView
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
    }()
     
     var activityIndicator: UIActivityIndicatorView = {
@@ -82,9 +80,7 @@ class HomeItemView: UIView {
         ])
         
         collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.reuseIdentifier)
-        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
-        //No necesitas registrar HeaderHomeView aquí ya que no es un header de sección
-        ///collectionView.register(HeaderHomeView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
+        ///collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
     }
 
     private func setupActivityIndicator() {

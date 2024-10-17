@@ -77,9 +77,9 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
     
     func didRetrieveWishlist(_ wishlistResponse: WishlistResponse) {
         // Procesar la respuesta y actualizar los items de la wishlist
-        self.wishlistItems = wishlistResponse.wishlists // Actualiza la lista de deseos
-        self.flashSale = wishlistResponse.flashSale // Actualiza la información del flash sale
-        self.campaignProducts = wishlistResponse.campaignProducts // Actualiza la lista de productos de campaña
+        wishlistItems = wishlistResponse.wishlists // Actualiza la lista de deseos
+        flashSale = wishlistResponse.flashSale // Actualiza la información del flash sale
+        campaignProducts = wishlistResponse.campaignProducts // Actualiza la lista de productos de campaña
         
         //view?.stopActivity() // Detener indicador de carga
         view?.updateUIList() // Actualizar la interfaz de usuario

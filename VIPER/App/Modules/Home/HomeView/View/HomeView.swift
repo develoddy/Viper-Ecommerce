@@ -16,6 +16,7 @@ class HomeView: UIViewController {
     var homeItemView = HomeItemView()
     let cellSpacingHeight: CGFloat = 5
     
+    var currentColumns: Int = 2 // Valor inicial de columnas
     
     // MARK: - LIFECICLY
 
@@ -24,10 +25,25 @@ class HomeView: UIViewController {
         super.viewDidLoad()
         setupView()
         
+        // Suscribirse a los cambios en el modo de columnas
+        NotificationCenter.default.addObserver(self, selector: #selector(handleColumnModeChange), name: .didChangeColumnMode, object: nil)
+        
         // Configura las acciones de los botones de la barra de filtros
-        homeItemView.filterBarView.filterButton.addTarget(self, action: #selector(handleFilter), for: .touchUpInside)
         homeItemView.filterBarView.sortButton.addTarget(self, action: #selector(handleSort), for: .touchUpInside)
+        homeItemView.filterBarView.oneColumnButton.addTarget(self, action: #selector(showOneColumn), for: .touchUpInside)
+        homeItemView.filterBarView.twoColumnButton.addTarget(self, action: #selector(showTwoColumns), for: .touchUpInside)
+        homeItemView.filterBarView.threeColumnButton.addTarget(self, action: #selector(showThreeColumns), for: .touchUpInside)
     }
+
+    @objc private func handleColumnModeChange() {
+        currentColumns = homeItemView.filterBarView.selectedColumnMode
+        homeItemView.collectionView.reloadData()
+    }
+    
+    deinit {
+            // Remover el observador al eliminar la vista
+            NotificationCenter.default.removeObserver(self)
+        }
     
     // VIEW DID LAYOUT SUB VIEWS
     override func viewDidLayoutSubviews() {
@@ -47,133 +63,38 @@ class HomeView: UIViewController {
         presenter?.viewDidLoad()
     }
     
-    // Función para cargar una imagen desde una URL
-    /**private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: urlString) else {
-            completion(nil)
-            return
-        }
-
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil)
-                return
-            }
-            let image = UIImage(data: data)
-            completion(image)
-        }
-        task.resume()
-    }*/
-    
-    @objc func handleFilter() {
+    @objc func handleSort() {
         // Acción para filtrar los productos
         presenter?.filterOptions()
     }
     
-    @objc func handleSort() {
-        // Acción para ordenar los productos
-        print("Ordenar productos")
-        
+    @objc func showOneColumn() {
+        currentColumns = 1
+        homeItemView.filterBarView.selectedColumnMode = currentColumns
+        homeItemView.collectionView.collectionViewLayout.invalidateLayout()
+        homeItemView.collectionView.reloadData()
+    }
+
+    @objc func showTwoColumns() {
+        currentColumns = 2
+        homeItemView.filterBarView.selectedColumnMode = currentColumns
+        homeItemView.collectionView.collectionViewLayout.invalidateLayout()
+        homeItemView.collectionView.reloadData()
+    }
+
+    @objc func showThreeColumns() {
+        currentColumns = 3
+        homeItemView.filterBarView.selectedColumnMode = currentColumns
+        homeItemView.collectionView.collectionViewLayout.invalidateLayout()
+        homeItemView.collectionView.reloadData()
     }
 }
-
-// MARK: - UICollectionViewDataSource & UICollectionViewDelegate
-extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return presenter?.numberOfSections() ?? 0 // Asegúrate de que esto sea correcto
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // Asegúrate de obtener el número de elementos desde el presenter
-        return presenter?.numberOfItems(in: section) ?? 0
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0: // Categorías
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as! CategoryCell
-            if let item = presenter?.getItem(at: indexPath.item, in: indexPath.section) {
-                if case let .categories(category) = item {
-                    cell.configure(with: category)
-                }
-            }
-            return cell
-        case 1: // Productos
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.reuseIdentifier, for: indexPath) as! ProductCell
-            if let item = presenter?.getItem(at: indexPath.item, in: indexPath.section) {
-                if case let .produtcs(product) = item {
-                    cell.configure(with: product) // Pasar el objeto ProductModel
-                }
-            }
-            return cell
-        default:
-            return UICollectionViewCell() // Manejo de error
-        }
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Deselect the item
-        collectionView.deselectItem(at: indexPath, animated: true)
-
-        // Comprobar si se trata de la sección de productos
-        if indexPath.section == 1 {
-            // Notificar al Presenter que se ha seleccionado un producto
-            /// Pasa el discount de cero de momento
-            presenter?.didSelectProduct(at: indexPath.item, at: 0)
-        }
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension HomeView: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.frame.width / 2) - 15
-        // Verificar si es una celda de categoría o de producto
-        if indexPath.section == 0 {
-            // Celdas de categorías (por ejemplo, sección 0)
-            return CGSize(width: width, height: 100) // Ajusta la altura para categorías
-        } else {
-            // Celdas de productos (otra sección)
-            return CGSize(width: width, height: 300) // Ajusta la altura para productos
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Inset para la sección
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10 // Espaciado vertical entre filas
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10 // Espaciado horizontal entre celdas
-    }
-    
-    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 80) // Ajusta la altura del header
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderHomeView
-        headerView.configure(with: UIImage(named: "logo-black"))
-        return headerView // Ahora debería funcionar sin errores
-    }*/
-
-}
-
-
 
 // MARK: - HOME VIEW PROTOCOL
 extension HomeView: HomeViewProtocol {
-    
+
     func updateUIList() {
         DispatchQueue.main.async {
-            //self.homeUI.tableView.reloadData()
             print("Actualizando la UI...")
             self.homeItemView.collectionView.reloadData() // Asegúrate de que hay un método en HomeItemView para recargar datos
         }
@@ -196,5 +117,99 @@ extension HomeView: HomeViewProtocol {
                 self.homeItemView.collectionView.alpha = 1.0
             })
         }
+    }
+    
+    func onError(_ error: Error) {
+        print("Error in View fetching Home: \(error.localizedDescription)")
+    }
+}
+
+
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegate
+extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // Asegúrate de obtener el número de elementos desde el presenter
+        return presenter?.numberOfItems() ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.reuseIdentifier, for: indexPath) as? ProductCell else {
+            return UICollectionViewCell()
+        }
+        
+        if let item = presenter?.getItem(at: indexPath.item) {
+            let showDetails = homeItemView.filterBarView.selectedColumnMode != 3 // Ocultar detalles si son 3 columnas
+            cell.configure(with: item, showDetails: showDetails)
+    
+            // Establecer la altura de la imagen según la lógica deseada
+            let imageHeight: CGFloat
+            switch homeItemView.filterBarView.selectedColumnMode {
+            case 1:
+                imageHeight = 450 // Altura para 1 columna
+            case 2:
+                imageHeight = 250 // Altura para 2 columnas
+            case 3:
+                imageHeight = 125 // Altura para 3 columnas
+            default:
+                imageHeight = 250 // Altura predeterminada
+            }
+            cell.setImageHeight(imageHeight) // Llama al método para establecer la altura
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Deselect the item
+        collectionView.deselectItem(at: indexPath, animated: true)
+        // Comprobar si se trata de la sección de productos
+        if indexPath.section == 0 {
+            // Notificar al Presenter que se ha seleccionado un producto
+            presenter?.didSelectProduct(at: indexPath.item, at: 0)
+        }
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension HomeView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // Calcula el ancho de la celda dividiendo el ancho del UICollectionView entre 2, restando los espacios
+        let padding: CGFloat = 10
+        let collectionViewWidth = collectionView.frame.width - padding * 2
+        ///let numberOfColumns = homeItemView.filterBarView.selectedColumnMode // Este valor será 1, 2, o 3 según el botón pulsado
+        // Dividimos el ancho del UICollectionView por el número de columnas
+        let width = collectionViewWidth / CGFloat(currentColumns) /// Este valor será 1, 2, o 3 según el botón pulsado
+        var height: CGFloat = 0
+        
+        switch currentColumns {
+        case 1:
+            // Actualiza para 1 columna
+            height = 500
+        case 2:
+            // Actualiza para 2 columnas
+            height = 300
+        case 3:
+            // Actualiza para 3 columnas
+            height = width
+        default:
+            break
+        }
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        // Espaciado desde los bordes del UICollectionView
+        return UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10 // Espaciado vertical entre filas
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10 // Espaciado horizontal entre celdas
     }
 }

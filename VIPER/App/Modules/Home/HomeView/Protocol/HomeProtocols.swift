@@ -16,6 +16,8 @@ protocol HomeViewProtocol: AnyObject {
     func updateUIList()
     func startActivity()
     func stopActivity() 
+    
+    func onError(_ error: Error)
 }
 
 protocol HomeWireFrameProtocol: AnyObject {
@@ -33,18 +35,17 @@ protocol HomePresenterProtocol: AnyObject {
     var wireFrame: HomeWireFrameProtocol? { get set }
         
     func viewDidLoad()
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func getItem(at index: Int, in section: Int) -> HomeRenderType?
-    
-    func filterOptions()
+    func numberOfItems() -> Int
+    func getItem(at index: Int) -> ProductModel?
     func didSelectProduct(at index: Int, at discountId: Int)
+    func filterOptions()
 }
 
 protocol HomeInteractorOutputProtocol: AnyObject {
     // INTERACTOR -> PRESENTER
     func interactorCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel)
     func didFetchProductDetails(with productDetailRenderViewModel: ProductDetailRenderViewModel)
+    func didFailToRetrieveWishlist(with error: Error)
 }
 
 protocol HomeInteractorInputProtocol: AnyObject {
