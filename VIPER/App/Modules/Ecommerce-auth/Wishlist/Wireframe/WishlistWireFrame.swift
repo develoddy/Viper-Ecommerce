@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 class WishlistWireFrame: WishlistWireFrameProtocol {
+   
+    
+
+    
 
     class func createWishlistModule() -> UIViewController {
         
@@ -60,5 +64,39 @@ class WishlistWireFrame: WishlistWireFrameProtocol {
             }
         }
     }
+    
+    func navigateToLogin(from view: WishlistViewProtocol?) {
+        
+        let loginViewController = LoginWireFrame.createLoginModule {
+            if let sourceView = view as? UIViewController {
+                sourceView.dismiss(animated: true) { // Cierra el login
+                    // Redirigir según el destino
+                    let whislistViewController = WishlistWireFrame.createWishlistModule()
+                    sourceView.present(whislistViewController, animated: true, completion: nil)
+                }
+            }
+        }
+        
+        if let sourceView = view as? UIViewController {
+            sourceView.present(loginViewController, animated: true, completion: nil)
+        }
+    }
+    
+    /*func navigateToLogin(from view: WishlistViewProtocol?, for destination: String) {
+        // Crear la vista de inicio de sesión
+        let loginViewController = LoginWireFrame.createLoginModule {
+            // Regresar al módulo del carrito después de iniciar sesión
+            if let sourceView = view as? UIViewController {
+                sourceView.dismiss(animated: true) { // Cierra el login
+                    let cartViewController = CartWireFrame.createCartModule()
+                    sourceView.present(cartViewController, animated: true, completion: nil) // Presenta el carrito
+                }
+            }
+        }
+        
+        if let sourceView = view as? UIViewController {
+            sourceView.present(loginViewController, animated: true, completion: nil)
+        }
+    }*/
     
 }

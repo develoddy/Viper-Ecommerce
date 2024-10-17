@@ -15,6 +15,8 @@ class WishlistPresenter: WishlistPresenterProtocol  {
     var interactor: WishlistInteractorInputProtocol?
     var wireFrame: WishlistWireFrameProtocol?
     
+    var destinationAfterLogin: String? = "WishlistPresenter"
+    
     var token = Token()
     
     // Modelos de vista actualizados
@@ -39,9 +41,11 @@ class WishlistPresenter: WishlistPresenterProtocol  {
     // TODO: implement presenter methods
     func viewDidLoad() {
         // DECIRLE AL INTERACTOR QUE QUIERE TRAER UNOS DATOS
-        guard let userId = token.getUserToken()?.user?.id , let token = token.getUserToken()?.token else { return }
-        self.interactor?.interactorGetWishlistData(with: userId, with: token)
+        /*guard let userId = token.getUserToken()?.user?.id , let token = token.getUserToken()?.token else { return }
+        self.interactor?.interactorGetWishlistData(with: userId, with: token)*/
         //view?.startActivity()
+        
+        interactor?.checkUserAuthentication()
     }
     
     func numberOfItems() -> Int {
@@ -72,7 +76,7 @@ class WishlistPresenter: WishlistPresenterProtocol  {
 
 // MARK: - WishlistInteractorOutputProtocol
 extension WishlistPresenter: WishlistInteractorOutputProtocol {
-    
+   
     // TODO: implement interactor output methods
     
     func didRetrieveWishlist(_ wishlistResponse: WishlistResponse) {
@@ -88,6 +92,11 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
     func didFailToRetrieveWishlist(with error: Error) {
         ///view?.stopActivity() // Detener indicador de carga
         view?.onError(error) // Mostrar el error en la vista
-        
+    }
+    
+    func didFailToAuthenticateUser() {
+        guard let destinationAfterLogin = destinationAfterLogin else { return }
+        // Aquí puedes gestionar la redirección al login
+        wireFrame?.navigateToLogin(from: view) // Asegúrate de que esta función esté implementada en el router
     }
 }

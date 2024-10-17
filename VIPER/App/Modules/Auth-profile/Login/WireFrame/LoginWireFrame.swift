@@ -11,7 +11,9 @@ import UIKit
 
 class LoginWireFrame: LoginWireFrameProtocol {
     
-    class func createLoginModule() -> UIViewController {
+
+    //class func createLoginModule() -> UIViewController {
+    class func createLoginModule(completion: @escaping () -> Void) -> UIViewController {
         let loginView = LoginView()
         let viewController = loginView
         let presenter: LoginPresenterProtocol & LoginInteractorOutputProtocol = LoginPresenter()
@@ -28,6 +30,10 @@ class LoginWireFrame: LoginWireFrameProtocol {
         interactor.localDatamanager = localDataManager
         interactor.remoteDatamanager = remoteDataManager
         remoteDataManager.remoteRequestHandler = interactor
+        
+        // Configurar el callback en el presenter
+        presenter.onLoginSuccess = completion
+        
         return viewController
     }
     
@@ -53,4 +59,41 @@ class LoginWireFrame: LoginWireFrameProtocol {
             //print("LoginWireFrame -  No hay token")
         }
     }
+    
+    func presentModule(for destination: String, from view: LoginViewProtocol?) {
+        
+        print("LoginWireFrame: destination: \(destination)")
+        
+        guard let sourceView = view as? UIViewController else { return }
+
+        switch destination {
+        case "Cart":
+            let cartViewController = CartWireFrame.createCartModule() // Asegúrate de tener este método
+            sourceView.present(cartViewController, animated: true, completion: nil)
+        case "Wishlist":
+            let wishlistViewController = WishlistWireFrame.createWishlistModule() // Asegúrate de tener este método
+            sourceView.present(wishlistViewController, animated: true, completion: nil)
+        default:
+            break
+        }
+    }
+    
+    // Función para presentar el módulo del carrito
+    /*func presentCartModule(from view: LoginViewProtocol?) {
+        
+        let productDetailVC = CartWireFrame.createCartModule()
+        if let viewController = view as? UIViewController {
+           
+           // Si está dentro de un UINavigationController, usar el push para navegar
+           if let navigationController = viewController.navigationController {
+               print("Debbug: LogintWireframe entra por: un UINavigationController, usar el PUSH para navegar")
+               navigationController.pushViewController(productDetailVC, animated: true)
+           } else {
+               print("Debbug: LogintWireframe entra por: PRESENTER el controlador de detalles del producto")
+               // Si no está dentro de un UINavigationController, presentar el controlador de detalles del producto
+               viewController.present(productDetailVC, animated: true, completion: nil)
+           }
+       }
+    }*/
+    
 }

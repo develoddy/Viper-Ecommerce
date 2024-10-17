@@ -18,26 +18,8 @@ class CartRemoteDataManager:CartRemoteDataManagerInputProtocol {
     init(apiService: APIServiceCartProtocol = APIServiceCart()) {
         self.apiService = apiService
     }
-    
-    /*
-     listAllCarts() {
-         this._cartService.resetCart();
-         if ( this._cartService._authService.user ) {
-           this._cartService.listCarts(this.userId).subscribe((resp:any) => {
-             resp.carts.forEach((cart:any) => {
-               this._cartService.changeCart(cart);
-             });
-           });
-         }
-       }
-     */
-    
-    //private var token = Token()
-    
+        
     // Buscar productos en el carrito en la base de datos
-    /// Hay que enviar el ID del usuario
-    /// Hay que enviar el token del usuario autenticado
-   
     func fetchCarts(with userId: Int) {
         
         // Llama a la función fetchCarts en el apiService
@@ -56,7 +38,4 @@ class CartRemoteDataManager:CartRemoteDataManagerInputProtocol {
             }
         }
     }
-
-    
-    
 }

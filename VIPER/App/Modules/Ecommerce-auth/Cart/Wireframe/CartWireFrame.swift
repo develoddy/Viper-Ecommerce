@@ -32,30 +32,48 @@ class CartWireFrame: CartWireFrameProtocol {
         return viewController
     }
     
-    /*func navigateToModule(from view: CartViewProtocol?) {
+    
+    func navigateToLogin(from view: CartViewProtocol?) {
+        // Crear la vista de inicio de sesión
+        let loginViewController = LoginWireFrame.createLoginModule {
+            // Regresar al módulo del carrito después de iniciar sesión
+            if let sourceView = view as? UIViewController {
+                sourceView.dismiss(animated: true) { // Cierra el login
+                    let cartViewController = CartWireFrame.createCartModule()
+                    sourceView.present(cartViewController, animated: true, completion: nil) // Presenta el carrito
+                }
+            }
+        }
+        
+        if let sourceView = view as? UIViewController {
+            sourceView.present(loginViewController, animated: true, completion: nil)
+        }
+    }
+    
+   
+    //func navigateToLogin(from view: CartViewProtocol?) {
         
         // Crear la vista de detalles del producto
-        let productDetailVC = ProductDetailWireFrame.createProductDetailModule()
+    //    let loginViewController = LoginWireFrame.createLoginModule()
+    //    if let sourceView = view as? UIViewController {
+    //        sourceView.present(loginViewController, animated: true, completion: nil)
+    //    }
         
         // Verificar que la vista (view) sea un controlador de vista válido
-        if let viewController = view as? UIViewController {
-            
-            // Personalizar el botón "Back" para el controlador anterior
-            let backItem = UIBarButtonItem()
-            backItem.title = ""  // Quitar el texto
-            viewController.navigationItem.backBarButtonItem = backItem
-            
-            // Cambiar el color de la flecha de "Back" a negro
-            viewController.navigationController?.navigationBar.tintColor = .black
+        /*
+         let productDetailVC = LoginWireFrame.createLoginModule()
+         if let viewController = view as? UIViewController {
             
             // Si está dentro de un UINavigationController, usar el push para navegar
             if let navigationController = viewController.navigationController {
+                print("Debbug: CartWireframe entra por: un UINavigationController, usar el PUSH para navegar")
                 navigationController.pushViewController(productDetailVC, animated: true)
             } else {
+                print("Debbug: CartWireframe entra por: PRESENTER el controlador de detalles del producto")
                 // Si no está dentro de un UINavigationController, presentar el controlador de detalles del producto
                 productDetailVC.modalPresentationStyle = .fullScreen
                 viewController.present(productDetailVC, animated: true, completion: nil)
             }
-        }
-    }*/
+        }*/
+    //}
 }

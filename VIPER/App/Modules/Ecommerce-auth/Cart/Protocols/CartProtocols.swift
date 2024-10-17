@@ -20,6 +20,8 @@ protocol CartViewProtocol: AnyObject {
 protocol CartWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createCartModule() -> UIViewController
+    
+    func navigateToLogin(from view: CartViewProtocol?) 
 }
 
 protocol CartPresenterProtocol: AnyObject {
@@ -39,6 +41,7 @@ protocol CartInteractorOutputProtocol: AnyObject {
     // INTERACTOR -> PRESENTER
     func didRetrieveCarts(_ cartstResponse: CartsAPIResponse)
     func didFailToRetrieveCarts(with error: Error)
+    func didFailToAuthenticateUser()
 }
 
 protocol CartInteractorInputProtocol: AnyObject {
@@ -47,7 +50,9 @@ protocol CartInteractorInputProtocol: AnyObject {
     var localDatamanager: CartLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: CartRemoteDataManagerInputProtocol? { get set }
     
+    func checkUserAuthentication()
     func fetchCarts(with userId: Int)
+    
 }
 
 protocol CartDataManagerInputProtocol: AnyObject {

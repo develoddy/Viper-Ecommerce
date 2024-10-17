@@ -43,7 +43,35 @@ class WelcomeWireFrame: WelcomeWireFrameProtocol {
      * Navegación: Compruebas si el topController es un UINavigationController. Si lo es, usas pushViewController para navegar.
      * Si no, usas present para mostrar la vista de inicio de sesión de otra manera.
      */
+    
+    // WelcomeWireFrame.swift
+
     func navigateToLoginView() {
+        let loginViewController = LoginWireFrame.createLoginModule {
+            // Acción a realizar después de un inicio de sesión exitoso
+            print("Inicio de sesión exitoso")
+            
+            // Aquí puedes agregar la lógica para navegar a otra vista después de un inicio de sesión exitoso
+            // Por ejemplo, podrías ir a un TabBarController o a otra vista
+        }
+
+        // Obtén la escena activa
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = scene.windows.first(where: { $0.isKeyWindow }),
+           let topController = window.rootViewController {
+            
+            // Si tienes un UINavigationController, navega usando él
+            if let navigationController = topController as? UINavigationController {
+                navigationController.pushViewController(loginViewController, animated: true)
+            } else {
+                // Si no es un UINavigationController, presenta el loginViewController de otra forma
+                topController.present(loginViewController, animated: true, completion: nil)
+            }
+        }
+    }
+
+    
+    /**func navigateToLoginView() {
         let loginViewController = LoginWireFrame.createLoginModule()
         
         // Obtén la escena activa
@@ -60,5 +88,5 @@ class WelcomeWireFrame: WelcomeWireFrameProtocol {
                 topController.present(loginViewController, animated: true, completion: nil)
             }
         }
-    }
+    }**/
 }

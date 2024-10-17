@@ -23,17 +23,11 @@ class FilterBarView: UIView {
     
     let oneColumnButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        //rectangle.portrait
-        // Añadir una imagen de sistema (por ejemplo, "1.circle")
         let image = UIImage(systemName: "rectangle") // Cambia "1.circle" por el nombre de la imagen que desees
         button.setImage(image, for: .normal)
-        
         button.tintColor = .black
-        
         // Establecer el contenido del botón
         button.imageView?.contentMode = .scaleAspectFit // Ajustar el modo de contenido de la imagen
-        
         // Ajustar el espaciado entre la imagen y el texto
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -42,17 +36,10 @@ class FilterBarView: UIView {
     
     let twoColumnButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        //rectangle.portrait.split.2x1
-        // Añadir una imagen de sistema (por ejemplo, "1.circle")
         let image = UIImage(systemName: "rectangle.split.2x1") // Cambia "1.circle" por el nombre de la imagen que desees
         button.setImage(image, for: .normal)
-        
         button.tintColor = .black
-        
-        // Establecer el contenido del botón
         button.imageView?.contentMode = .scaleAspectFit // Ajustar el modo de contenido de la imagen
-        
         // Ajustar el espaciado entre la imagen y el texto
         ///button.semanticContentAttribute = .forceRightToLeft // Esto es para que la imagen esté a la izquierda y el texto a la derecha
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -61,21 +48,13 @@ class FilterBarView: UIView {
     
     let threeColumnButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        //rectangle.split.2x2
-        // Añadir una imagen de sistema (por ejemplo, "1.circle")
         let image = UIImage(systemName: "rectangle.split.2x2") // Cambia "1.circle" por el nombre de la imagen que desees
         button.setImage(image, for: .normal)
-        
         button.tintColor = .black
-        
         // Establecer el contenido del botón
-        //button.contentHorizontalAlignment = .left // Alineación horizontal
         button.imageView?.contentMode = .scaleAspectFit // Ajustar el modo de contenido de la imagen
-        button.setPreferredSymbolConfiguration(.init(pointSize: 26, weight: .light), forImageIn: .normal) // Ajustar el tamaño de la imagen
+        //button.setPreferredSymbolConfiguration(.init(pointSize: 24, weight: .light), forImageIn: .normal) // Ajustar el tamaño de la imagen
         ///button.heightAnchor.constraint(equalToConstant: 50).isActive = true // Cambiar 50 a la altura deseada
-        // Ajustar el espaciado entre la imagen y el texto
-        ///button.semanticContentAttribute = .forceRightToLeft // Esto es para que la imagen esté a la izquierda y el texto a la derecha
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

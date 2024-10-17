@@ -14,13 +14,15 @@ protocol LoginViewProtocol: AnyObject {
     var presenter: LoginPresenterProtocol? { get set }
     func startActivity()
     func stopActivity()
+    func showError(with error: String)
 }
 
 protocol LoginWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
-    static func createLoginModule() -> UIViewController
+    static func createLoginModule(completion: @escaping () -> Void) -> UIViewController
     func presentNewTabBarController()
-    
+    //func presentCartModule(from view: LoginViewProtocol?)
+    func presentModule(for destination: String, from view: LoginViewProtocol?)
 }
 
 protocol LoginPresenterProtocol: AnyObject {
@@ -28,6 +30,8 @@ protocol LoginPresenterProtocol: AnyObject {
     var view: LoginViewProtocol? { get set }
     var interactor: LoginInteractorInputProtocol? { get set }
     var wireFrame: LoginWireFrameProtocol? { get set }
+    var onLoginSuccess: (() -> Void)? { get set }
+    func didAuthenticateUser()
     
     func viewDidLoad()
     func showTabBar(email: String, password: String)

@@ -9,7 +9,7 @@
 import Foundation
 
 class WishlistRemoteDataManager:WishlistRemoteDataManagerInputProtocol {
-   
+
     var remoteRequestHandler: WishlistRemoteDataManagerOutputProtocol?
     
     // Lista que contendrá los datos obtenidos
@@ -23,9 +23,8 @@ class WishlistRemoteDataManager:WishlistRemoteDataManagerInputProtocol {
         self.apiService = apiService
     }
     
-    
     // Método para obtener la wishlist
-    func fetchWishlist(with userId: Int, token: String) {
+    func fetchWishlists(with userId: Int, with token: String) {
        
        // Define el tiempo actual
        let timeNow = Int(Date().timeIntervalSince1970)

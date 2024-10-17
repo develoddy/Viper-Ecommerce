@@ -20,6 +20,7 @@ protocol WishlistWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createWishlistModule() -> UIViewController
     func navigateToProductDetail(from view: WishlistViewProtocol?, with productId: Int, slug: String, discountId: Int?)
+    func navigateToLogin(from view: WishlistViewProtocol?)
 }
 
 protocol WishlistPresenterProtocol: AnyObject {
@@ -40,6 +41,7 @@ protocol WishlistInteractorOutputProtocol: AnyObject {
     // INTERACTOR -> PRESENTER
     func didRetrieveWishlist(_ wishlistResponse: WishlistResponse)
     func didFailToRetrieveWishlist(with error: Error)
+    func didFailToAuthenticateUser() 
 }
 
 protocol WishlistInteractorInputProtocol: AnyObject {
@@ -48,7 +50,8 @@ protocol WishlistInteractorInputProtocol: AnyObject {
     var localDatamanager: WishlistLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: WishlistRemoteDataManagerInputProtocol? { get set }
     
-    func interactorGetWishlistData(with userId: Int ,with token: String)
+    func checkUserAuthentication()
+    func fetchWishlists(with userId: Int, with token: String)
 }
 
 protocol WishlistDataManagerInputProtocol: AnyObject {
@@ -58,7 +61,7 @@ protocol WishlistDataManagerInputProtocol: AnyObject {
 protocol WishlistRemoteDataManagerInputProtocol: AnyObject {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: WishlistRemoteDataManagerOutputProtocol? { get set }
-    func fetchWishlist(with userId: Int, token: String)
+    func fetchWishlists(with userId: Int, with token: String)
 }
 
 protocol WishlistRemoteDataManagerOutputProtocol: AnyObject {

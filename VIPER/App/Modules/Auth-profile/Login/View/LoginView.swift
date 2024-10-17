@@ -51,14 +51,23 @@ class LoginView: UIViewController {
     
     // TAP LOGIN
     @objc private func didTapLoginButton() {
+        guard let email = loginUI.emailText.text, !email.isEmpty,
+              let password = loginUI.passwordText.text, !password.isEmpty else {
+            showError(with: "Por favor, completa ambos campos.")
+            print("Por favor, completa ambos campos.")
+            return
+        }
         
-        guard let email = loginUI.emailText.text,
-              let password = loginUI.passwordText.text else {
-                  return
-              }
-        // LLAMAMOS AL PRESENTER ENVIDANDOLE EL EMAIL & PASSWORD
+        // LLAMAMOS AL PRESENTER ENVIÁNDOLE EL EMAIL & PASSWORD
         presenter?.showTabBar(email: email, password: password)
     }
+    /*@objc private func didTapLoginButton() {
+        guard let email = loginUI.emailText.text, let password = loginUI.passwordText.text else {
+            return
+        }
+        // LLAMAMOS AL PRESENTER ENVIDANDOLE EL EMAIL & PASSWORD
+        presenter?.showTabBar(email: email, password: password)
+    }*/
 }
 
 
@@ -80,5 +89,9 @@ extension LoginView: LoginViewProtocol {
         //self.loginUI.activityIndicator.stopAnimating()
         //self.loginUI.activityIndicator.hidesWhenStopped = true
         self.loginUI.loginButton.hideLoading()
+    }
+    
+    func showError(with error: String) {
+        print("Login Error  message : \(error)")
     }
 }

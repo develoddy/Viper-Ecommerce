@@ -15,6 +15,22 @@ class CartInteractor: CartInteractorInputProtocol {
     var localDatamanager: CartLocalDataManagerInputProtocol?
     var remoteDatamanager: CartRemoteDataManagerInputProtocol?
     
+    
+    let authService: APIServiceAuthProtocol
+    
+    // MARK: - CONSTRUCTOR
+    init(authService: APIServiceAuthProtocol = APIServiceAuth()) {
+        self.authService = authService
+    }
+
+    func checkUserAuthentication() {
+        if let userId = authService.fetchUserAuth()?.user?.id {
+            fetchCarts(with: userId)
+        } else {
+            presenter?.didFailToAuthenticateUser()
+        }
+    }
+    
     func fetchCarts(with userId: Int) {
         remoteDatamanager?.fetchCarts(with: userId)
     }

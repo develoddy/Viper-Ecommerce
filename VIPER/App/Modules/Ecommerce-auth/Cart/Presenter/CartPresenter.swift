@@ -23,12 +23,7 @@ class CartPresenter: CartPresenterProtocol  {
     
     // TODO: implement presenter methods
     func viewDidLoad() {
-        let autService = APIServiceAuth()
-        if let userId = autService.fetchUserAuth()?.user?.id  {
-            interactor?.fetchCarts(with: userId)
-        } else {
-            print("Cart Presenter no exist user aut")
-        }
+        interactor?.checkUserAuthentication()
     }
     
     func numberOfItems() -> Int {
@@ -51,7 +46,6 @@ class CartPresenter: CartPresenterProtocol  {
 
 // MARK: - CartInteractorOutputProtocol
 extension CartPresenter: CartInteractorOutputProtocol {
- 
 
     // TODO: implement interactor output methods
     func didRetrieveCarts(_ cartstResponse: CartsAPIResponse) {
@@ -60,7 +54,12 @@ extension CartPresenter: CartInteractorOutputProtocol {
     }
     
     func didFailToRetrieveCarts(with error: Error) {
-        
+        // llamar a la vista
+    }
+    
+    func didFailToAuthenticateUser() {
+        // Aquí puedes gestionar la redirección al login
+        wireFrame?.navigateToLogin(from: view) // Asegúrate de que esta función esté implementada en el router
     }
     
 }

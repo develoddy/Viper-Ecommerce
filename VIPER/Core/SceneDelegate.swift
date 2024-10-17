@@ -13,11 +13,161 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     // MARK: VALIDAMOS SI EL USUARIO TIENE EL TOKEN O SI NO ESTÁ LOGUEADO
-    // SI TIENE EL TOKEN ENTONCES MOSTRAMOS EL TABBARCONTROLLER
+    // V5
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
         
+        let window = UIWindow(windowScene: windowScene)
         
+        // Verificar si es la primera vez que se abre la app
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        
+        if !hasLaunchedBefore {
+            // Es la primera vez, mostrar el módulo de bienvenida
+            let welcomeViewController = WelcomeWireFrame.createWelcomeModule()
+            window.rootViewController = welcomeViewController
+            
+            // Marcar que la app ha sido lanzada antes
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+        } else {
+            // Siempre muestra el TabBarController con la vista de inicio
+            let submodules = (
+                home: HomeWireFrame.createHomeModule(),
+                search: UIViewController(), // Puedes agregar aquí un módulo de búsqueda si lo tienes
+                profile: ProfileWireFrame.createProfileModule(),
+                wishlist: WishlistWireFrame.createWishlistModule(),
+                cart: CartWireFrame.createCartModule()
+            )
+            let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+            window.rootViewController = tabBarController
+        }
+        
+        self.window = window
+        window.makeKeyAndVisible()
+    }
+    
+    //v4
+    /**func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+        
+        // Verificar si es la primera vez que se abre la app
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        
+        if !hasLaunchedBefore {
+            // Es la primera vez, mostrar el módulo de bienvenida
+            let welcomeViewController = WelcomeWireFrame.createWelcomeModule()
+            window.rootViewController = welcomeViewController
+            
+            // Marcar que la app ha sido lanzada antes
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+        } else {
+            // No es la primera vez, verificar si hay token para decidir qué mostrar
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let obj = appDelegate.objUsuarioSesion
+            let token = obj?.token
+            
+            if token != nil {
+                // Si hay token, muestra el TabBarController
+                let submodules = (
+                    home: HomeWireFrame.createHomeModule(),
+                    search: UIViewController(),
+                    profile: ProfileWireFrame.createProfileModule(),
+                    wishlist: WishlistWireFrame.createWishlistModule(),
+                    cart: CartWireFrame.createCartModule()
+                )
+                let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+                window.rootViewController = tabBarController
+            } else {
+                // Si no hay token, muestra el flujo de inicio de sesión
+                let loginViewController = LoginWireFrame.createLoginModule {
+                    // Acción a realizar después de un inicio de sesión exitoso
+                    let submodules = (
+                        home: HomeWireFrame.createHomeModule(),
+                        search: UIViewController(),
+                        profile: ProfileWireFrame.createProfileModule(),
+                        wishlist: WishlistWireFrame.createWishlistModule(),
+                        cart: CartWireFrame.createCartModule()
+                    )
+                    let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+                    self.changeRootViewController(tabBarController)
+                }
+                window.rootViewController = loginViewController
+            }
+        }
+        
+        self.window = window
+        window.makeKeyAndVisible()
+    }*/
+    
+    // v3
+    /*func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+
+        // Siempre muestra el TabBarController con la vista de inicio
+        let submodules = (
+            home: HomeWireFrame.createHomeModule(),
+            search: UIViewController(), // Puedes agregar aquí un módulo de búsqueda si lo tienes
+            profile: ProfileWireFrame.createProfileModule(),
+            wishlist: WishlistWireFrame.createWishlistModule(),
+            cart: CartWireFrame.createCartModule()
+        )
+        let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+        window.rootViewController = tabBarController
+        
+        self.window = window
+        window.makeKeyAndVisible()
+    }*/
+
+    // V2
+    /**func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let obj = appDelegate.objUsuarioSesion
+        let token = obj?.token
+
+        if token != nil {
+            // Si hay token, muestra el TabBarController
+            let submodules = (
+                home: HomeWireFrame.createHomeModule(),
+                search: UIViewController(),
+                profile: ProfileWireFrame.createProfileModule(),
+                wishlist: WishlistWireFrame.createWishlistModule(),
+                cart: CartWireFrame.createCartModule()
+            )
+            let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+            window.rootViewController = tabBarController
+        } else {
+            // Si no hay token, muestra el flujo de inicio de sesión
+            let loginViewController = LoginWireFrame.createLoginModule {
+                // Acción a realizar después de un inicio de sesión exitoso
+                let submodules = (
+                    home: HomeWireFrame.createHomeModule(),
+                    search: UIViewController(),
+                    profile: ProfileWireFrame.createProfileModule(),
+                    wishlist: WishlistWireFrame.createWishlistModule(),
+                    cart: CartWireFrame.createCartModule()
+                )
+                let tabBarController = TabBarModuleBuilder.build(usingSubmodules: submodules)
+                self.changeRootViewController(tabBarController)
+            }
+            window.rootViewController = loginViewController
+        }
+        
+        self.window = window
+        window.makeKeyAndVisible()
+    }*/
+
+    // SI TIENE EL TOKEN ENTONCES MOSTRAMOS EL TABBARCONTROLLER
+    
+    /**func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Asegúrate de que la escena sea del tipo UIWindowScene
         guard let windowScene = scene as? UIWindowScene else { return }
         
@@ -48,41 +198,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = window
         window.makeKeyAndVisible()
-        
-        
-        
-    
-        // Asegúrate de que la escena sea del tipo UIWindowScene
-        /**guard let windowScene = (scene as? UIWindowScene) else { return }
-        let appDelegate = AppDelegate()
-        let obj = appDelegate.objUsuarioSesion
-        let token = obj?.token
-
-        //MARK: VALIDATIONS
-        if token == nil {
-            let submodules = (
-                home: HomeWireFrame.createHomeModule(),
-                search: UIViewController(),
-                profile: ProfileWireFrame.createProfileModule(),
-                wishlist: WishlistWireFrame.createWishlistModule(),
-                cart: CartWireFrame.createCartModule()
-            )
-
-            let window                  = UIWindow(windowScene: windowScene)
-            let tabBarController        = TabBarModuleBuilder.build(usingSubmodules: submodules)
-            window.rootViewController   =  tabBarController
-            self.window                 = window
-            window.makeKeyAndVisible()
-        } else {
-            /**let window = UIWindow(windowScene: windowScene)
-            let viewController = HomeWireFrame.createHomeModule() //LoginWireFrame.createLoginModule()
-            viewController.modalPresentationStyle = .fullScreen
-            window.rootViewController = viewController
-            self.window = window
-            window.makeKeyAndVisible()*/
-        }*/
-    
-    }
+    }*/
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

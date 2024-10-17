@@ -10,14 +10,28 @@ import Foundation
 
 class WishlistInteractor: WishlistInteractorInputProtocol {
    
-
-    // MARK: Properties
+    // MARK: - Properties
     weak var presenter: WishlistInteractorOutputProtocol?
     var localDatamanager: WishlistLocalDataManagerInputProtocol?
     var remoteDatamanager: WishlistRemoteDataManagerInputProtocol?
     
-    func interactorGetWishlistData(with userId: Int, with token: String) {
-        remoteDatamanager?.fetchWishlist(with: userId, token: token)
+    let authService: APIServiceAuthProtocol
+    
+    // MARK: - CONSTRUCTOR
+    init(authService: APIServiceAuthProtocol = APIServiceAuth()) {
+        self.authService = authService
+    }
+    
+    func checkUserAuthentication() {
+        if let userId = authService.fetchUserAuth()?.user?.id, let token = authService.fetchUserAuth()?.token {
+            fetchWishlists(with: userId, with: token)
+        } else {
+            presenter?.didFailToAuthenticateUser()
+        }
+    }
+    
+    func fetchWishlists(with userId: Int, with token: String) {
+        remoteDatamanager?.fetchWishlists(with: userId, with: token)
     }
 }
 
