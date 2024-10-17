@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CartWireFrame: CartWireFrameProtocol {
+class CartWireFrame: BaseWireFrame, CartWireFrameProtocol {
 
     class func createCartModule() -> UIViewController {
         let cartView = CartView()
@@ -33,47 +33,33 @@ class CartWireFrame: CartWireFrameProtocol {
     }
     
     
+    /*
+     * Heredar de la Clase Base en WishlistWireFrame
+     * Luego puedes hacer que WishlistWireFrame herede de BaseWireFrame y usar las
+     * funciones compartidas.
+     */
     func navigateToLogin(from view: CartViewProtocol?) {
-        // Crear la vista de inicio de sesión
-        let loginViewController = LoginWireFrame.createLoginModule {
-            // Regresar al módulo del carrito después de iniciar sesión
-            if let sourceView = view as? UIViewController {
-                sourceView.dismiss(animated: true) { // Cierra el login
-                    let cartViewController = CartWireFrame.createCartModule()
-                    sourceView.present(cartViewController, animated: true, completion: nil) // Presenta el carrito
-                }
-            }
-        }
+        guard let sourceView = view as? UIViewController else { return }
         
-        if let sourceView = view as? UIViewController {
-            sourceView.present(loginViewController, animated: true, completion: nil)
+        presentLogin(from: sourceView) { [weak sourceView] in
+            sourceView?.dismiss(animated: true) {
+                let tabBarController = self.createTabBarController()
+                tabBarController.selectedIndex = 4 // Index de Wishlist
+                self.changeRootViewController(to: tabBarController)
+            }
         }
     }
     
-   
-    //func navigateToLogin(from view: CartViewProtocol?) {
-        
-        // Crear la vista de detalles del producto
-    //    let loginViewController = LoginWireFrame.createLoginModule()
-    //    if let sourceView = view as? UIViewController {
-    //        sourceView.present(loginViewController, animated: true, completion: nil)
-    //    }
-        
-        // Verificar que la vista (view) sea un controlador de vista válido
-        /*
-         let productDetailVC = LoginWireFrame.createLoginModule()
-         if let viewController = view as? UIViewController {
-            
-            // Si está dentro de un UINavigationController, usar el push para navegar
-            if let navigationController = viewController.navigationController {
-                print("Debbug: CartWireframe entra por: un UINavigationController, usar el PUSH para navegar")
-                navigationController.pushViewController(productDetailVC, animated: true)
-            } else {
-                print("Debbug: CartWireframe entra por: PRESENTER el controlador de detalles del producto")
-                // Si no está dentro de un UINavigationController, presentar el controlador de detalles del producto
-                productDetailVC.modalPresentationStyle = .fullScreen
-                viewController.present(productDetailVC, animated: true, completion: nil)
-            }
-        }*/
-    //}
+    
+    private func createTabBarController() -> UITabBarController {
+        let submodules = (
+            home: HomeWireFrame.createHomeModule(),
+            search: UIViewController(),
+            profile: ProfileWireFrame.createProfileModule(),
+            wishlist: WishlistWireFrame.createWishlistModule(),
+            cart: CartWireFrame.createCartModule()
+        )
+        return TabBarModuleBuilder.build(usingSubmodules: submodules)
+    }
+    
 }

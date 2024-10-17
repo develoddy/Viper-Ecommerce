@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WishlistWireFrame: WishlistWireFrameProtocol {
+class WishlistWireFrame: BaseWireFrame, WishlistWireFrameProtocol {
    
     
 
@@ -65,38 +65,33 @@ class WishlistWireFrame: WishlistWireFrameProtocol {
         }
     }
     
+    
+    /*
+     * Heredar de la Clase Base en WishlistWireFrame
+     * Luego puedes hacer que WishlistWireFrame herede de BaseWireFrame y usar las funciones compartidas.
+     */
     func navigateToLogin(from view: WishlistViewProtocol?) {
+        guard let sourceView = view as? UIViewController else { return }
         
-        let loginViewController = LoginWireFrame.createLoginModule {
-            if let sourceView = view as? UIViewController {
-                sourceView.dismiss(animated: true) { // Cierra el login
-                    // Redirigir según el destino
-                    let whislistViewController = WishlistWireFrame.createWishlistModule()
-                    sourceView.present(whislistViewController, animated: true, completion: nil)
-                }
+        presentLogin(from: sourceView) { [weak sourceView] in
+            sourceView?.dismiss(animated: true) {
+                let tabBarController = self.createTabBarController()
+                tabBarController.selectedIndex = 3 // Index de Wishlist
+                self.changeRootViewController(to: tabBarController)
             }
-        }
-        
-        if let sourceView = view as? UIViewController {
-            sourceView.present(loginViewController, animated: true, completion: nil)
         }
     }
+
     
-    /*func navigateToLogin(from view: WishlistViewProtocol?, for destination: String) {
-        // Crear la vista de inicio de sesión
-        let loginViewController = LoginWireFrame.createLoginModule {
-            // Regresar al módulo del carrito después de iniciar sesión
-            if let sourceView = view as? UIViewController {
-                sourceView.dismiss(animated: true) { // Cierra el login
-                    let cartViewController = CartWireFrame.createCartModule()
-                    sourceView.present(cartViewController, animated: true, completion: nil) // Presenta el carrito
-                }
-            }
-        }
-        
-        if let sourceView = view as? UIViewController {
-            sourceView.present(loginViewController, animated: true, completion: nil)
-        }
-    }*/
-    
+    private func createTabBarController() -> UITabBarController {
+        let submodules = (
+            home: HomeWireFrame.createHomeModule(),
+            search: UIViewController(),
+            profile: ProfileWireFrame.createProfileModule(),
+            wishlist: WishlistWireFrame.createWishlistModule(),
+            cart: CartWireFrame.createCartModule()
+        )
+        return TabBarModuleBuilder.build(usingSubmodules: submodules)
+    }
+
 }

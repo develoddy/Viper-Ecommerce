@@ -53,6 +53,8 @@
 		B38437702CB482D900F4ED84 /* OptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384376F2CB482D900F4ED84 /* OptionModel.swift */; };
 		B38437722CB48B2800F4ED84 /* APIServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38437712CB48B2800F4ED84 /* APIServiceProtocol.swift */; };
 		B38437742CB48E1300F4ED84 /* HomeListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38437732CB48E1300F4ED84 /* HomeListResponse.swift */; };
+		B386F7FF2CC16B0B00286E07 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B386F7FE2CC16B0B00286E07 /* UIWindow.swift */; };
+		B386F8012CC16E5C00286E07 /* BaseWireFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B386F8002CC16E5C00286E07 /* BaseWireFrame.swift */; };
 		B39629102CB3016F00984D01 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B396290F2CB3016F00984D01 /* ProductCell.swift */; };
 		B39629132CB3024100984D01 /* HeaderHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39629122CB3024100984D01 /* HeaderHomeView.swift */; };
 		B3A0668A27919A0B00271073 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0668927919A0B00271073 /* AppDelegate.swift */; };
@@ -223,6 +225,8 @@
 		B384376F2CB482D900F4ED84 /* OptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionModel.swift; sourceTree = "<group>"; };
 		B38437712CB48B2800F4ED84 /* APIServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceProtocol.swift; sourceTree = "<group>"; };
 		B38437732CB48E1300F4ED84 /* HomeListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListResponse.swift; sourceTree = "<group>"; };
+		B386F7FE2CC16B0B00286E07 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
+		B386F8002CC16E5C00286E07 /* BaseWireFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWireFrame.swift; sourceTree = "<group>"; };
 		B396290F2CB3016F00984D01 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		B39629122CB3024100984D01 /* HeaderHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderHomeView.swift; sourceTree = "<group>"; };
 		B3A0668627919A0B00271073 /* VIPER.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VIPER.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -503,6 +507,7 @@
 				B3A4D49127958A31006B4CCA /* Extensions.swift */,
 				B31963F127995BD500A23628 /* TextFieldWithPadding.swift */,
 				B31963F32799801000A23628 /* LoadingButton.swift */,
+				B386F7FE2CC16B0B00286E07 /* UIWindow.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -510,6 +515,7 @@
 		B38437312CB4781100F4ED84 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B386F8002CC16E5C00286E07 /* BaseWireFrame.swift */,
 				B3A4D47527937092006B4CCA /* Token.swift */,
 			);
 			path = Helpers;
@@ -1613,6 +1619,7 @@
 				B34695B32CB0257100082B0A /* LoginFormView.swift in Sources */,
 				B384375A2CB4829200F4ED84 /* DiscountCategorieModel.swift in Sources */,
 				B31963BB279630E200A23628 /* HomeItemView.swift in Sources */,
+				B386F7FF2CC16B0B00286E07 /* UIWindow.swift in Sources */,
 				B38437502CB4825D00F4ED84 /* ProductModel.swift in Sources */,
 				B3A4D49227958A32006B4CCA /* Extensions.swift in Sources */,
 				B3A4D47C27941201006B4CCA /* TabBarViewController.swift in Sources */,
@@ -1641,6 +1648,7 @@
 				B38437462CB4823400F4ED84 /* UserModel.swift in Sources */,
 				B3EE90DB2CBFF6AB0018910F /* APIServiceCart.swift in Sources */,
 				B3A5193A2CB5D7C500B23EF8 /* ProductDetailLocalDataManager.swift in Sources */,
+				B386F8012CC16E5C00286E07 /* BaseWireFrame.swift in Sources */,
 				B3A4D4372791A5FF006B4CCA /* HomeLocalDataManager.swift in Sources */,
 				B3A4D47627937092006B4CCA /* Token.swift in Sources */,
 				B3B6E7902CBFA39600B9AD17 /* WishlistResponse.swift in Sources */,
