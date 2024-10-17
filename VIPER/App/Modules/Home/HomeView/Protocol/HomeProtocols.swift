@@ -54,7 +54,7 @@ protocol HomeInteractorInputProtocol: AnyObject {
     var remoteDatamanager: HomeRemoteDataManagerInputProtocol? { get set }
     
     // FUNCIÓN QUE PERMITE AL INTERACTOR GESTIONAR DATOS CON LA EJECUCIÓN DE ESTA FUNCIÓN DESDE EL PRESENTER
-    func interactorGetData(token: String)
+    func interactorGetData()
     func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?)
 }
 
@@ -65,7 +65,7 @@ protocol HomeDataManagerInputProtocol: AnyObject {
 protocol HomeRemoteDataManagerInputProtocol: AnyObject {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: HomeRemoteDataManagerOutputProtocol? { get set }
-    func remoteGetData(token: String)
+    func remoteGetData()
     func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?)
 }
 

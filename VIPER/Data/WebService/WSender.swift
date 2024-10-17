@@ -144,7 +144,6 @@ class WSender: NSObject {
         let sesion = URLSession.init(configuration: configuracionSesion)
         
         let urlServicio = URL(string: "\(url)/\(path)")
-        print("Debbug WSSender doGETTokenToURL y obtengo la URL: \(urlServicio)")
         let request = NSMutableURLRequest(url: urlServicio!)
         request.addValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -203,7 +202,7 @@ class WSender: NSObject {
     //class func doPOSTToURL(conURL: String, conPath: NSString, conParametros: [String: Any], completion: @escaping (WebResponse) -> Void) -> URLSessionDataTask {
         let configuracionSesion = URLSessionConfiguration.default
         configuracionSesion.httpAdditionalHeaders = self.createHeaderRequest() as? [AnyHashable: Any]
-        let sesion = URLSession(configuration: configuracionSesion)
+        let _ = URLSession(configuration: configuracionSesion)
         let urlServicio = URL(string: "\(url)\(path.hasPrefix("/") ? path as String : "/\(path)")")
         var request = URLRequest(url: urlServicio!)
         request.addValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")

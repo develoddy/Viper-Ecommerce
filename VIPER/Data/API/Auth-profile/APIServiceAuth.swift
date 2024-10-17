@@ -8,7 +8,7 @@
 import Foundation
 protocol APIServiceAuthProtocol {
     func login(email: String?, password: String?, completion: @escaping (Result<LoginResponse, Error>) -> Void)
-    func fetchUserAuth() -> LoginResponse
+    func fetchUserAuth() -> LoginResponse?
     // CURRENT_USER_AUTHENTICATED
 }
 
@@ -17,8 +17,8 @@ protocol APIServiceAuthProtocol {
 class APIServiceAuth: APIServiceAuthProtocol {
     
 
-    func fetchUserAuth() -> LoginResponse {
-        var token = Token()
+    func fetchUserAuth() -> LoginResponse? {
+        let token = Token()
         return token.getUserToken()
     }
     

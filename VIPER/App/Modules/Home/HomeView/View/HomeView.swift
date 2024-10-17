@@ -95,16 +95,14 @@ extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
         case 0: // Categorías
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as! CategoryCell
             if let item = presenter?.getItem(at: indexPath.item, in: indexPath.section) {
-                // Descomponer el enum para acceder al proveedor
                 if case let .categories(category) = item {
-                    cell.configure(with: category) // Pasar el objeto CategorieModel
+                    cell.configure(with: category)
                 }
             }
             return cell
         case 1: // Productos
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.reuseIdentifier, for: indexPath) as! ProductCell
             if let item = presenter?.getItem(at: indexPath.item, in: indexPath.section) {
-                // Descomponer el enum para acceder al proveedor
                 if case let .produtcs(product) = item {
                     cell.configure(with: product) // Pasar el objeto ProductModel
                 }
@@ -140,7 +138,7 @@ extension HomeView: UICollectionViewDelegateFlowLayout {
             return CGSize(width: width, height: 100) // Ajusta la altura para categorías
         } else {
             // Celdas de productos (otra sección)
-            return CGSize(width: width, height: 200) // Ajusta la altura para productos
+            return CGSize(width: width, height: 300) // Ajusta la altura para productos
         }
     }
 

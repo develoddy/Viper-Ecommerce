@@ -29,13 +29,13 @@ class HomeRemoteDataManager:HomeRemoteDataManagerInputProtocol {
     // MARK: - FUNCTIONS
     
     // GET DATA
-    func remoteGetData(token: String) {
+    func remoteGetData() {
         
         // Define el tiempo actual
         let timeNow = Int(Date().timeIntervalSince1970)
 
         // Llama a la función fetchList en el apiService
-        apiService.fetchList(timeNow: timeNow, token: token) { result in
+        apiService.fetchList(timeNow: timeNow) { result in
             switch result {
                 case .success(let homeListResponse):
                     ///print("===> HomeRemote Respuesta completa del API: \(homeListResponse)")

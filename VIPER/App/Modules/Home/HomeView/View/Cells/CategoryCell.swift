@@ -40,29 +40,21 @@ class CategoryCell: UICollectionViewCell {
     private func setupView() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(imageView)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
         
-        let padding: CGFloat = 5.0
-        
-        // Establecer el marco para la imagen
-        let imageHeight: CGFloat = contentView.bounds.height * 0.5 // Ajusta la altura de la imagen (50% de la celda)
-        imageView.frame = CGRect(
-            x: (contentView.bounds.width - contentView.bounds.width * 0.8) / 2, // Centra la imagen horizontalmente
-            y: 0,
-            width: contentView.bounds.width * 0.8, // Establece el ancho de la imagen (80% de la celda)
-            height: imageHeight // Usa la altura ajustada
-        )
-        
-        // Establecer el marco para el título
-        titleLabel.frame = CGRect(
-            x: padding,
-            y: imageView.frame.maxY + padding, // Debajo de la imagen con un margen
-            width: contentView.bounds.width - 2 * padding,
-            height: contentView.bounds.height * 0.3 - padding // Ajusta la altura del título (30% de la celda)
-        )
+        // Usar NSLayoutConstraint para posicionar los elementos
+        NSLayoutConstraint.activate([
+            // Configuración de la imagen
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5), // Ajusta la altura de la imagen
+
+            // Configuración del título
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5.0), // Debajo de la imagen
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5.0),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5.0),
+            titleLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.3) // Ajusta la altura del título
+        ])
     }
     
     func configure(with category: CategorieModel) {
@@ -78,6 +70,6 @@ class CategoryCell: UICollectionViewCell {
         } else {
             imageView.image = nil // Si no hay nombre de imagen, establece la imagen a nil
         }
-        contentView.backgroundColor = .systemGreen
+        //contentView.backgroundColor = .systemGreen
     }
 }

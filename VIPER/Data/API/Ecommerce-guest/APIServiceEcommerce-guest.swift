@@ -8,14 +8,14 @@
 import Foundation
 
 protocol  APIServiceEcommerceGuestPrtocol {
-    func fetchList(timeNow: Int, token: String?, completion: @escaping (Result<HomeListResponse, Error>) -> Void)
+    func fetchList(timeNow: Int, completion: @escaping (Result<HomeListResponse, Error>) -> Void)
     func fetchProductDetails(productId: Int, slug: String, discountId: Int?, completion: @escaping (Result<ProductDetailResponse, Error>) -> Void)
 }
 
 class APIServiceEcommerceGuest: APIServiceEcommerceGuestPrtocol {
     
     // Fetch List
-    func fetchList(timeNow: Int, token: String?, completion: @escaping (Result<HomeListResponse, Error>) -> Void) {
+    func fetchList(timeNow: Int, completion: @escaping (Result<HomeListResponse, Error>) -> Void) {
         let url = URL(string: "https://api.lujandev.com/api/home/list?TIME_NOW=\(timeNow)")! // Asegúrate de usar la URL correcta
         
         var request = URLRequest(url: url)

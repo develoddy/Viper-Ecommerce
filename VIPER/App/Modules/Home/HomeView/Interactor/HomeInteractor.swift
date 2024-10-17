@@ -18,8 +18,8 @@ class HomeInteractor: HomeInteractorInputProtocol {
     private var product: ProductModel?
     
     // DECIRLE A LA CAPA DE CONEXIÓN EXTERNA (EXTERNALDATAMANEGER) QUE TIENE QUE TRAER UNOS DATOS
-    func interactorGetData(token: String) {
-        remoteDatamanager?.remoteGetData(token: token)
+    func interactorGetData() {
+        remoteDatamanager?.remoteGetData()
     }
     
     func fetchProductDetails(with productId: Int, with slug:String, with discountId: Int?) {

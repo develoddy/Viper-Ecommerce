@@ -32,6 +32,7 @@ class ProductCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .gray
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -49,40 +50,27 @@ class ProductCell: UICollectionViewCell {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
         
-        // Aquí configuramos los marcos (frames) de imageView y titleLabel
-        let padding: CGFloat = 2.0
-        
-        // Definir el tamaño de la imagen (100% del alto de la celda)
-        let imageHeight = contentView.bounds.height * 1
-        imageView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: contentView.bounds.width,
-            height: imageHeight
-        )
-        
-        // Definir el tamaño del título (el 10% restante de la celda, con padding)
-        let titleHeight = contentView.bounds.height * 0.1
-        titleLabel.frame = CGRect(
-            x: padding,
-            y: imageView.frame.maxY + padding,
-            width: contentView.bounds.width - 2 * padding,
-            height: titleHeight
-        )
-        
-        // Configuración del marco del precio (debajo de titleLabel)
-        let priceHeight = contentView.bounds.height * 0.1
-        priceLabel.frame = CGRect(
-            x: padding,
-            y: titleLabel.frame.maxY + padding,
-            width: contentView.bounds.width - 2 * padding,
-            height: priceHeight
-        )
+        // Usar NSLayoutConstraint para posicionar los elementos
+        NSLayoutConstraint.activate([
+            // Configuración de la imagen
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9), // Ajustar según sea necesario
+
+            // Configuración del título
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 2.0),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2.0),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2.0),
+            titleLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1), // Ajustar según sea necesario
+
+            // Configuración del precio
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2.0),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2.0),
+            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2.0),
+            priceLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.1) // Ajustar según sea necesario
+        ])
     }
     
     func configure(with product: ProductModel) {

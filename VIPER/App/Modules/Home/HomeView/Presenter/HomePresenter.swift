@@ -15,7 +15,6 @@ class HomePresenter  {
     weak var view: HomeViewProtocol?
     var interactor: HomeInteractorInputProtocol?
     var wireFrame: HomeWireFrameProtocol?
-    var token = Token()
     
     // MARK: - Closures
     /**var viewModel: [HomeFeedRenderViewModel] = [] {
@@ -38,8 +37,7 @@ extension HomePresenter: HomePresenterProtocol {
     
     func viewDidLoad() {
         // DECIRLE AL INTERACTOR QUE QUIERE TRAER UNOS DATOS
-        guard let token = token.getUserToken().token else { return }
-        self.interactor?.interactorGetData(token: token)
+        self.interactor?.interactorGetData()
         view?.startActivity()
     }
     

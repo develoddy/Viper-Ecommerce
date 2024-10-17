@@ -11,11 +11,17 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
         
-    //var objUsuarioSesion : ResponseTokenBE?
-    var objUsuarioSesion : LoginResponse?
+    // Variable para almacenar el objeto de sesión del usuario
+   
+    var objUsuarioSesion: LoginResponse?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Inicializa objUsuarioSesion aquí
+        // Asegúrate de crear un objeto LoginResponse válido
+        objUsuarioSesion = LoginResponse(token: nil, user: nil) // Asegúrate de que LoginResponse tenga un inicializador adecuado
+        
+        // Si LoginResponse requiere parámetros, inicialízalo de acuerdo a tus necesidades.
+        
         return true
     }
 

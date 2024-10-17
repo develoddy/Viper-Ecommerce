@@ -13,6 +13,7 @@ class FilterBarView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Ordenar", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -20,6 +21,7 @@ class FilterBarView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Filtrar", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -37,30 +39,18 @@ class FilterBarView: UIView {
         backgroundColor = UIColor.systemBackground
         addSubview(sortButton)
         addSubview(filterButton)
+        
+        NSLayoutConstraint.activate([
+            sortButton.heightAnchor.constraint(equalToConstant: 40),
+            sortButton.widthAnchor.constraint(equalToConstant: 100),
+            sortButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            sortButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            filterButton.heightAnchor.constraint(equalToConstant: 40),
+            filterButton.widthAnchor.constraint(equalToConstant: 100),
+            filterButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            filterButton.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
-    
-    override func layoutSubviews() {
-           super.layoutSubviews()
-           
-           // Ajustar el tamaño y posición del botón "Ordenar"
-           let buttonHeight: CGFloat = 40
-           let buttonWidth: CGFloat = 100
-           let padding: CGFloat = 16
-           
-           sortButton.frame = CGRect(
-               x: padding,
-               y: (frame.height - buttonHeight) / 2, // Centrado verticalmente
-               width: buttonWidth,
-               height: buttonHeight
-           )
-           
-           // Ajustar el tamaño y posición del botón "Filtrar"
-           filterButton.frame = CGRect(
-               x: frame.width - buttonWidth - padding,
-               y: (frame.height - buttonHeight) / 2, // Centrado verticalmente
-               width: buttonWidth,
-               height: buttonHeight
-           )
-       }
 }
 

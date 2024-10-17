@@ -24,7 +24,7 @@ class CartPresenter: CartPresenterProtocol  {
     // TODO: implement presenter methods
     func viewDidLoad() {
         let autService = APIServiceAuth()
-        if let userId = autService.fetchUserAuth().user?.id  {
+        if let userId = autService.fetchUserAuth()?.user?.id  {
             interactor?.fetchCarts(with: userId)
         } else {
             print("Cart Presenter no exist user aut")

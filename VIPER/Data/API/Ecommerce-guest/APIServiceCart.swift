@@ -18,7 +18,7 @@ class APIServiceCart: APIServiceCartProtocol {
         
         // Obtener token de autenticación (por ejemplo, desde el servicio de autenticación)
         let authService = APIServiceAuth()
-        let token = authService.fetchUserAuth().token
+        let token = authService.fetchUserAuth()?.token
         
         // Construir la URL base
         let urlString = "https://api.lujandev.com/api/cart/list?user_id=\(userId)"

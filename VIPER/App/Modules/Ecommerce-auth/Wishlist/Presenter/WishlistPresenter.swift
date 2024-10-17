@@ -39,7 +39,7 @@ class WishlistPresenter: WishlistPresenterProtocol  {
     // TODO: implement presenter methods
     func viewDidLoad() {
         // DECIRLE AL INTERACTOR QUE QUIERE TRAER UNOS DATOS
-        guard let userId = token.getUserToken().user?.id , let token = token.getUserToken().token else { return }
+        guard let userId = token.getUserToken()?.user?.id , let token = token.getUserToken()?.token else { return }
         self.interactor?.interactorGetWishlistData(with: userId, with: token)
         //view?.startActivity()
     }

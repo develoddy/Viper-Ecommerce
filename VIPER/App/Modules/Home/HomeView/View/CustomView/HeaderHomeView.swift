@@ -2,13 +2,6 @@ import UIKit
 
 class HeaderHomeView: UICollectionReusableView {
 
-    /**private let logoImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
-    }()*/
-    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Buscar productos"
@@ -28,22 +21,19 @@ class HeaderHomeView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
 
-        // Ajustar el tamaño del searchBar para que ocupe todo el ancho y esté más abajo
-        searchBar.frame = CGRect(
-            x: 10, // Margen izquierdo
-            y: 45, // Posición vertical ajustada para moverlo más abajo dentro del header
-            width: frame.width - 20, // Margen izquierdo y derecho de 10 puntos
-            height: 50 // Altura del searchBar
-        )
-    }
-    
     private func setupView() {
         backgroundColor = .systemBackground
         ///addSubview(logoImageView)
         addSubview(searchBar)
+        
+        // Configura las restricciones para el searchBar
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            searchBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            searchBar.topAnchor.constraint(equalTo: topAnchor, constant: 50), // Ajusta según sea necesario
+            searchBar.heightAnchor.constraint(equalToConstant: 50) // Altura fija
+        ])
     }
     
     func configure(with logo: UIImage?) {

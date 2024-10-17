@@ -8,6 +8,18 @@
 import UIKit
 
 class Token {
+    static let shared = Token()
+    
+    public func getUserToken() -> LoginResponse? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil // O maneja el error de alguna manera
+        }
+        return appDelegate.objUsuarioSesion
+    }
+}
+
+
+/*class Token {
     
     static let shared = Token()
     
@@ -18,4 +30,4 @@ class Token {
         }
         return token
     }
-}
+}*/
