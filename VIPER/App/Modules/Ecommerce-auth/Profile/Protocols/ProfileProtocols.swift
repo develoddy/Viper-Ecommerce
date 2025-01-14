@@ -17,6 +17,7 @@ protocol ProfileViewProtocol: AnyObject {
 protocol ProfileWireFrameProtocol: AnyObject {
     // PRESENTER -> WIREFRAME
     static func createProfileModule() -> UIViewController
+    func navigateToListAddressView(from view: ProfileViewProtocol?)
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
@@ -26,6 +27,8 @@ protocol ProfilePresenterProtocol: AnyObject {
     var wireFrame: ProfileWireFrameProtocol? { get set }
     
     func viewDidLoad()
+    func logoutButtonTapped()
+    func didTapNavigationToListAddress(at index: Int)
 }
 
 protocol ProfileInteractorOutputProtocol: AnyObject {
@@ -37,6 +40,7 @@ protocol ProfileInteractorInputProtocol: AnyObject {
     var presenter: ProfileInteractorOutputProtocol? { get set }
     var localDatamanager: ProfileLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: ProfileRemoteDataManagerInputProtocol? { get set }
+    func logout()
 }
 
 protocol ProfileDataManagerInputProtocol: AnyObject {

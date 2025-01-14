@@ -57,8 +57,6 @@ class WishlistView: UIViewController {
 
 // MARK: - WishlistViewProtocol
 extension WishlistView: WishlistViewProtocol {
-    
-    // TODO: implement view output methods
 
     func updateUIList() {
         DispatchQueue.main.async {
@@ -71,8 +69,6 @@ extension WishlistView: WishlistViewProtocol {
     func onError(_ error: Error) {
         print("Error in View fetching wishlist: \(error.localizedDescription)")
     }
-    
-    
 }
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegate
@@ -137,6 +133,7 @@ extension WishlistView: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 /// Opción 1: Cambiar el tamaño en el flujo de diseño Modifica el método sizeForItemAt en la extensión de UICollectionViewDelegateFlowLayout de la siguiente manera:
 extension WishlistView: UICollectionViewDelegateFlowLayout {
     // Método para proporcionar la vista del header

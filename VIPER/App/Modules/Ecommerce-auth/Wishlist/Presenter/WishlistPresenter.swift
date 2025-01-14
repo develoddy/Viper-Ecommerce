@@ -40,11 +40,6 @@ class WishlistPresenter: WishlistPresenterProtocol  {
     
     // TODO: implement presenter methods
     func viewDidLoad() {
-        // DECIRLE AL INTERACTOR QUE QUIERE TRAER UNOS DATOS
-        /*guard let userId = token.getUserToken()?.user?.id , let token = token.getUserToken()?.token else { return }
-        self.interactor?.interactorGetWishlistData(with: userId, with: token)*/
-        //view?.startActivity()
-        
         interactor?.checkUserAuthentication()
     }
     
@@ -95,7 +90,6 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
     }
     
     func didFailToAuthenticateUser() {
-        guard let destinationAfterLogin = destinationAfterLogin else { return }
         // Aquí puedes gestionar la redirección al login
         wireFrame?.navigateToLogin(from: view) // Asegúrate de que esta función esté implementada en el router
     }

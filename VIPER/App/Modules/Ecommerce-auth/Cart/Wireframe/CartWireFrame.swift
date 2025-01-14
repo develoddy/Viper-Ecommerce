@@ -32,7 +32,6 @@ class CartWireFrame: BaseWireFrame, CartWireFrameProtocol {
         return viewController
     }
     
-    
     /*
      * Heredar de la Clase Base en WishlistWireFrame
      * Luego puedes hacer que WishlistWireFrame herede de BaseWireFrame y usar las
@@ -50,7 +49,6 @@ class CartWireFrame: BaseWireFrame, CartWireFrameProtocol {
         }
     }
     
-    
     private func createTabBarController() -> UITabBarController {
         let submodules = (
             home: HomeWireFrame.createHomeModule(),
@@ -61,5 +59,4 @@ class CartWireFrame: BaseWireFrame, CartWireFrameProtocol {
         )
         return TabBarModuleBuilder.build(usingSubmodules: submodules)
     }
-    
 }

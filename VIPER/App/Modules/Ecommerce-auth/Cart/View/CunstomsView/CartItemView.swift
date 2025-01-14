@@ -29,10 +29,17 @@ class CartItemView: UIView {
         return collectionView
     }()
     
+    var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        setupActivityIndicator()
     }
     
     required init?(coder: NSCoder) {
@@ -54,6 +61,18 @@ class CartItemView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
+    
+    private func setupActivityIndicator() {
+        addSubview(activityIndicator)
+
+        // Centra el activityIndicator en la vista
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 20),  // Ancho específico
+            activityIndicator.heightAnchor.constraint(equalToConstant: 20)  // Alto específico
         ])
     }
 }

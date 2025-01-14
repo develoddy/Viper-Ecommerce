@@ -11,7 +11,7 @@ import Foundation
 // MARK: PRESENTER
 class HomePresenter  {
     
-    // MARK: - PROPERTIES
+    // MARK: - Prperties
     weak var view: HomeViewProtocol?
     var interactor: HomeInteractorInputProtocol?
     var wireFrame: HomeWireFrameProtocol?
@@ -24,12 +24,9 @@ class HomePresenter  {
     }
 }
 
-
-// MARK: - HOME PRESENT PROTOCOL >
+// MARK: - HomePresenterProtocol
 extension HomePresenter: HomePresenterProtocol {
-    
     func viewDidLoad() {
-        // Llamar al interactor
         self.interactor?.interactorGetData()
         view?.startActivity()
     }
@@ -59,34 +56,16 @@ extension HomePresenter: HomePresenterProtocol {
 
 // MARK: - OUTPUT HOME INTERACTOR PROTOCOL
 extension HomePresenter: HomeInteractorOutputProtocol {
-    
-    
-    // EL PRESENTER RECIBE EL ARRAY DE OBJETOS QUE ENVIA EL INTERACTOR
     func interactorCallBackData(with homeFeedRenderViewModel: HomeFeedRenderViewModel) {
-        ///viewModel = homeFeedRenderViewModel
         ourProducts = homeFeedRenderViewModel.ourProducts
-        // Aqui puedes seguir asignado los datos del api en una variable
-        ///categories = homeFeedRenderViewModel.categories
-        ///besProducts = homeFeedRenderViewModel.bestProducts
         view?.stopActivity()
         view?.updateUIList()
     }
     
-    func didFetchProductDetails(with productDetailRenderViewModel: ProductDetailRenderViewModel) {
-        
-        print("===> HomePresenter Respuesta completa del Interactor: \(productDetailRenderViewModel)")
-        // Aquí llamas al wireframe para navegar a la vista de detalles del producto
-        /*if let view = view {
-            wireFrame?.navigateToProductDetail(from: view, with: product)
-        } else {
-            print("Error: la vista es nil, no se puede navegar.")
-        }*/
-    }
-    
     func didFailToRetrieveWishlist(with error: Error) {
-        ///view?.stopActivity() // Detener indicador de carga
-        view?.onError(error) // Mostrar el error en la vista
-        
+        view?.onError(error)
     }
     
+    func didFetchProductDetails(with productDetailRenderViewModel: ProductDetailRenderViewModel) {
+    }
 }

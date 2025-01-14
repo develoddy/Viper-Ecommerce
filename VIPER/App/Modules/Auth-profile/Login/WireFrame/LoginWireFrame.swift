@@ -77,23 +77,4 @@ class LoginWireFrame: LoginWireFrameProtocol {
             break
         }
     }
-    
-    // Función para presentar el módulo del carrito
-    /*func presentCartModule(from view: LoginViewProtocol?) {
-        
-        let productDetailVC = CartWireFrame.createCartModule()
-        if let viewController = view as? UIViewController {
-           
-           // Si está dentro de un UINavigationController, usar el push para navegar
-           if let navigationController = viewController.navigationController {
-               print("Debbug: LogintWireframe entra por: un UINavigationController, usar el PUSH para navegar")
-               navigationController.pushViewController(productDetailVC, animated: true)
-           } else {
-               print("Debbug: LogintWireframe entra por: PRESENTER el controlador de detalles del producto")
-               // Si no está dentro de un UINavigationController, presentar el controlador de detalles del producto
-               viewController.present(productDetailVC, animated: true, completion: nil)
-           }
-       }
-    }*/
-    
 }

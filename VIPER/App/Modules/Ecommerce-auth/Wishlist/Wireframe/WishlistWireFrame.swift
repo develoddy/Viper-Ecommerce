@@ -11,10 +11,6 @@ import UIKit
 
 class WishlistWireFrame: BaseWireFrame, WishlistWireFrameProtocol {
    
-    
-
-    
-
     class func createWishlistModule() -> UIViewController {
         
         let wishlistView = WishlistView()
@@ -65,14 +61,12 @@ class WishlistWireFrame: BaseWireFrame, WishlistWireFrameProtocol {
         }
     }
     
-    
     /*
      * Heredar de la Clase Base en WishlistWireFrame
      * Luego puedes hacer que WishlistWireFrame herede de BaseWireFrame y usar las funciones compartidas.
      */
     func navigateToLogin(from view: WishlistViewProtocol?) {
         guard let sourceView = view as? UIViewController else { return }
-        
         presentLogin(from: sourceView) { [weak sourceView] in
             sourceView?.dismiss(animated: true) {
                 let tabBarController = self.createTabBarController()
@@ -82,7 +76,6 @@ class WishlistWireFrame: BaseWireFrame, WishlistWireFrameProtocol {
         }
     }
 
-    
     private func createTabBarController() -> UITabBarController {
         let submodules = (
             home: HomeWireFrame.createHomeModule(),
@@ -93,5 +86,4 @@ class WishlistWireFrame: BaseWireFrame, WishlistWireFrameProtocol {
         )
         return TabBarModuleBuilder.build(usingSubmodules: submodules)
     }
-
 }

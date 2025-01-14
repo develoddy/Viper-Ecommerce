@@ -13,6 +13,8 @@ protocol CartViewProtocol: AnyObject {
     // PRESENTER -> VIEW
     var presenter: CartPresenterProtocol? { get set }
     func updateUIList()
+    func startActivity()
+    func stopActivity()
     func updateFooter(with cart: CartsAPIResponse)
     func onError(_ error: Error)
 }
@@ -35,6 +37,7 @@ protocol CartPresenterProtocol: AnyObject {
     func numberOfItems() -> Int
     func getItem(at index: Int) -> CartAPIResponse?
     func didSelectProduct(at index: Int)
+    func didTapLoginButton()
 }
 
 protocol CartInteractorOutputProtocol: AnyObject {

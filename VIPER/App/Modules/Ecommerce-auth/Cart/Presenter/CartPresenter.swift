@@ -17,12 +17,13 @@ class CartPresenter: CartPresenterProtocol  {
     
     var cartsItems: [CartAPIResponse] = [] {
         didSet {
-            self.view?.updateUIList() // Actualiza la vista cuando cambian los items
+            self.view?.updateUIList()
         }
     }
     
     // TODO: implement presenter methods
     func viewDidLoad() {
+        view?.startActivity()
         interactor?.checkUserAuthentication()
     }
     
@@ -42,14 +43,18 @@ class CartPresenter: CartPresenterProtocol  {
         ///wireFrame?.navigateToProductDetail(from: view, with: item) // Navega a la vista de detalles
     }
     
+    func didTapLoginButton() {
+        wireFrame?.navigateToLogin(from: view)
+    }
 }
 
 // MARK: - CartInteractorOutputProtocol
 extension CartPresenter: CartInteractorOutputProtocol {
-
     // TODO: implement interactor output methods
     func didRetrieveCarts(_ cartstResponse: CartsAPIResponse) {
         cartsItems = cartstResponse.carts
+        view?.stopActivity()
+        view?.updateUIList()
         view?.updateFooter(with: cartstResponse)
     }
     
@@ -58,8 +63,8 @@ extension CartPresenter: CartInteractorOutputProtocol {
     }
     
     func didFailToAuthenticateUser() {
-        // Aquí puedes gestionar la redirección al login
-        wireFrame?.navigateToLogin(from: view) // Asegúrate de que esta función esté implementada en el router
+        view?.stopActivity()
+        view?.updateUIList()
+        view?.updateUIList()
     }
-    
 }

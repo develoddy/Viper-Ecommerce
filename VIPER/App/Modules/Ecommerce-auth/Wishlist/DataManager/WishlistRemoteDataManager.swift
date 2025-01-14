@@ -39,7 +39,6 @@ class WishlistRemoteDataManager:WishlistRemoteDataManagerInputProtocol {
                self.remoteRequestHandler?.onWishlistRetrieved(with: wishlistResponse)
                
            case .failure(let error):
-               // Maneja el error de manera adecuada
                print("Error fetching wishlist: \(error.localizedDescription)")
                // Notifica al interactor sobre el error
                self.remoteRequestHandler?.onError(error)

@@ -14,6 +14,12 @@ class ProfileInteractor: ProfileInteractorInputProtocol {
     weak var presenter: ProfileInteractorOutputProtocol?
     var localDatamanager: ProfileLocalDataManagerInputProtocol?
     var remoteDatamanager: ProfileRemoteDataManagerInputProtocol?
+    
+    func logout() {
+        // Aquí va la lógica de cierre de sesión (p. ej., eliminar tokens)
+        // Una vez completado, informamos al presenter
+        //presenter?.didLogout()
+    }
 
 }
 

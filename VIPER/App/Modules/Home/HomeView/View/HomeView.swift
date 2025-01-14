@@ -18,9 +18,7 @@ class HomeView: UIViewController {
     
     var currentColumns: Int = 2 // Valor inicial de columnas
     
-    // MARK: - LIFECICLY
-
-    // VIEWDIDLOAD
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -35,17 +33,6 @@ class HomeView: UIViewController {
         homeItemView.filterBarView.threeColumnButton.addTarget(self, action: #selector(showThreeColumns), for: .touchUpInside)
     }
 
-    @objc private func handleColumnModeChange() {
-        currentColumns = homeItemView.filterBarView.selectedColumnMode
-        homeItemView.collectionView.reloadData()
-    }
-    
-    deinit {
-            // Remover el observador al eliminar la vista
-            NotificationCenter.default.removeObserver(self)
-        }
-    
-    // VIEW DID LAYOUT SUB VIEWS
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeItemView.frame = view.bounds
@@ -55,12 +42,21 @@ class HomeView: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(homeItemView)
 
-        // Configura el delegate y dataSource de homeUI	
         homeItemView.collectionView.dataSource = self
         homeItemView.collectionView.delegate = self
     
-        // COMUNICO A MI VISTA CON EL PRESENTER
         presenter?.viewDidLoad()
+    }
+    
+    // MARK: - Actions
+    @objc private func handleColumnModeChange() {
+        currentColumns = homeItemView.filterBarView.selectedColumnMode
+        homeItemView.collectionView.reloadData()
+    }
+    
+    deinit {
+        // Remover el observador al eliminar la vista
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func handleSort() {
@@ -96,7 +92,7 @@ extension HomeView: HomeViewProtocol {
     func updateUIList() {
         DispatchQueue.main.async {
             print("Actualizando la UI...")
-            self.homeItemView.collectionView.reloadData() // Asegúrate de que hay un método en HomeItemView para recargar datos
+            self.homeItemView.collectionView.reloadData()
         }
     }
     
@@ -134,7 +130,6 @@ extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.reuseIdentifier, for: indexPath) as? ProductCell else {
             return UICollectionViewCell()
         }
@@ -162,7 +157,6 @@ extension HomeView: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Deselect the item
         collectionView.deselectItem(at: indexPath, animated: true)
         // Comprobar si se trata de la sección de productos
         if indexPath.section == 0 {

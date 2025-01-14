@@ -98,11 +98,6 @@ extension ProfileView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileOptionCell", for: indexPath)
-        //cell.textLabel?.text = presenter?.optionTitle(for: indexPath.row)
-        //cell.accessoryType = .disclosureIndicator // Añade el icono de '>'
-        //cell.backgroundColor = .darkGray
-        //return cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileOptionCell.identifier, for: indexPath) as? ProfileOptionCell else {
             return UITableViewCell()
         }
@@ -121,6 +116,6 @@ extension ProfileView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // Aquí puedes manejar la navegación según la opción seleccionada
+        presenter?.didTapNavigationToListAddress(at: indexPath.row)
     }
 }
